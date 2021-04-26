@@ -1,5 +1,16 @@
+--- Lua color library
+--
+-- Convert and manipulate color values.
+--
+-- All values are in [0,1], unless otherwise specified.
+
+
+
 require "lua-color.util"
 local class = require "lua-color.util.class"
+
+
+
 
 -- Utils
 
@@ -32,6 +43,14 @@ end
 -- Color
 
 
+--- Color class
+--
+-- @param value Color in hex notation
+--              or as {r=, g=, b=}
+--              or as {h=, s=, v=}
+--              or as {h=, s=, l=}
+--
+-- @return Color
 local Color = class(function (this, value)
   if value then
     this:set(value)
@@ -42,6 +61,14 @@ local Color = class(function (this, value)
   end
 end)
 
+--- Set color to value
+--
+-- @param value Color in hex notation
+--              or as {r=, g=, b=}
+--              or as {h=, s=, v=}
+--              or as {h=, s=, l=}
+--
+-- @return self
 function Color:set(value)
   if type(value) == "string" then
     local r, g, b = value:match "(%x%x)(%x%x)(%x%x)"
@@ -74,14 +101,22 @@ function Color:set(value)
     self.g = g
     self.b = b
   end
+
+  return self
 end
 
 
 
+--- Get rgb values
+--
+-- @return red, green, blue
 function Color:rgb()
   return self.r, self.g, self.b
 end
 
+--- Get hsv values
+--
+-- @return hue, saturation, value, min_value
 function Color:hsv()
   local r, g, b = self.r, self.g, self.b
 
@@ -105,6 +140,9 @@ function Color:hsv()
   return hue, saturation, max, min
 end
 
+--- Get hsl values
+---
+-- @return hue, saturation, lightness
 function Color:hsl()
   local hue, _, max, min = self:hsv()
   local lightness = (max + min) / 2
@@ -117,6 +155,13 @@ end
 
 
 
+--- Rotate hue of color
+--
+-- @param value Angle as factor of a full turn [0,1]
+--              or as {deg=} degree
+--              or as {rad=} radians
+--
+-- @return self
 function Color:rotate(value)
   local r
   if type(value) == "number" then
@@ -138,6 +183,7 @@ end
 
 
 
+--- Get color in rgb hex notation
 function Color:__tostring()
   return string.format(
     "#%02x%02x%02x",

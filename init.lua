@@ -1,6 +1,5 @@
-require "lib.utils"
-
-
+require "lua-color.util"
+local class = require "lua-color.util.class"
 
 -- Utils
 
@@ -33,7 +32,7 @@ end
 -- Color
 
 
-local Color = require "lib.class" (function (this, value)
+local Color = class(function (this, value)
   if value then
     this:set(value)
   else

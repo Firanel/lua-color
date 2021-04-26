@@ -51,6 +51,18 @@ color:invert()
 local new_color = -color
 ```
 
+### Generate color scheme
+``` lua
+-- Analogous
+local new_a, orig, new_b = color:analogous()
+
+-- Triadic
+local orig, new_a, new_b = color:tiad()
+
+-- Tetradic
+local orig, new_a, new_b, new_c = color:tetrad()
+```
+
 ### Other
 
 ```lua

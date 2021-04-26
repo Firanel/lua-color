@@ -206,6 +206,39 @@ end
 
 
 
+--- Generate analogous color scheme
+--
+-- @return Color, self, Color
+function Color:analogous()
+  local h, s, v = self:hsv()
+  return Color {h = (h - 1/12) % 1, s = s, v = v},
+    self,
+    Color {h = (h + 1/12) % 1, s = s, v = v}
+end
+
+--- Generate triadic color scheme
+--
+-- @return self, Color, Color
+function Color:triad()
+  local h, s, v = self:hsv()
+  return self,
+    Color {h = (h + 1/3) % 1, s = s, v = v},
+    Color {h = (h + 2/3) % 1, s = s, v = v}
+end
+
+--- Generate tetradic color scheme
+--
+-- @return self, Color, Color, Color
+function Color:tetrad()
+  local h, s, v = self:hsv()
+  return self,
+    Color {h = (h + 1/4) % 1, s = s, v = v},
+    Color {h = (h + 2/4) % 1, s = s, v = v},
+    Color {h = (h + 3/4) % 1, s = s, v = v}
+end
+
+
+
 --- Get color in rgb hex notation
 function Color:__tostring()
   return string.format(

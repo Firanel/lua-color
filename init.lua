@@ -49,9 +49,12 @@ end
 --              or as {r=, g=, b=}
 --              or as {h=, s=, v=}
 --              or as {h=, s=, l=}
+--              or another Color
 --
 -- @return Color
 local Color = class(function (this, value)
+  this.__is_color = true
+
   if value then
     this:set(value)
   else
@@ -61,16 +64,26 @@ local Color = class(function (this, value)
   end
 end)
 
+--- Clone color
+function Color:clone()
+  return Color(self)
+end
+
 --- Set color to value
 --
 -- @param value Color in hex notation
 --              or as {r=, g=, b=}
 --              or as {h=, s=, v=}
 --              or as {h=, s=, l=}
+--              or another Color
 --
 -- @return self
 function Color:set(value)
-  if type(value) == "string" then
+  if value.__is_color then
+    self.r = value.r
+    self.g = value.g
+    self.b = value.b
+  elseif type(value) == "string" then
     local r, g, b = value:match "(%x%x)(%x%x)(%x%x)"
     assert(r ~= nil)
     self.r = tonumber(r, 16) / 255
@@ -181,6 +194,16 @@ function Color:rotate(value)
   return self
 end
 
+--- Invert the color
+--
+-- @return self
+function Color:invert()
+  self.r = 1 - self.r
+  self.g = 1 - self.g
+  self.b = 1 - self.b
+  return self
+end
+
 
 
 --- Get color in rgb hex notation
@@ -192,5 +215,30 @@ function Color:__tostring()
     round(self.b * 255)
   )
 end
+
+--- Get inverted clone of color
+function Color:__unm()
+  return Color(self):invert()
+end
+
+--- Check if colors are equal
+function Color:__eq(other)
+  return self.r == other.r
+    and self.g == other.g
+    and self.b == other.b
+end
+
+
+
+--- Check whether `color` is a Color
+--
+-- @param color
+--
+-- @return boolean
+function Color.isColor(color)
+  return color ~= nil and color.__is_color == true
+end
+
+
 
 return Color

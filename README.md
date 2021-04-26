@@ -21,6 +21,8 @@ local Color = require "lua-color"
 local color = Color "#41ba69"
 local color = Color { r = 0.255, g = 0.729, b = 0.412 }
 local color = Color { h = 0.389, s = 0.65, v = 0.73 }
+
+local new_color = Color(color)
 ```
 
 ### Retrieve the color
@@ -43,4 +45,19 @@ print(r * 255, g * 255, b * 255)
 color:rotate(0.5)
 color:rotate {deg = 180}
 color:rotate {rad = math.pi}
+
+-- Get inverse
+color:invert()
+local new_color = -color
 ```
+
+### Other
+
+```lua
+-- Check if variable is color
+if Color.isColor(color) then print "It's a color!" end
+
+-- Equate colors
+assert(color == color:clone())
+```
+

@@ -57,7 +57,7 @@ local new_color = -color
 local new_a, orig, new_b = color:analogous()
 
 -- Triadic
-local orig, new_a, new_b = color:tiad()
+local orig, new_a, new_b = color:triad()
 
 -- Tetradic
 local orig, new_a, new_b, new_c = color:tetrad()

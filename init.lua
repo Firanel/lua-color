@@ -61,6 +61,7 @@ local Color = class(function (this, value)
     this.r = 0
     this.g = 0
     this.b = 0
+    this.a = 1
   end
 end)
 
@@ -72,10 +73,10 @@ end
 --- Set color to value
 --
 -- @param value Color in hex notation
---              or as {r=, g=, b=}
---              or as {h=, s=, v=}
---              or as {h=, s=, l=}
---              or another Color
+--              or as {r=, g=, b=[, a=]}
+--              or as {h=, s=, v=[, a=]}
+--              or as {h=, s=, l=[, a=]}
+--              or another Color object
 --
 -- @return self
 function Color:set(value)
@@ -83,16 +84,45 @@ function Color:set(value)
     self.r = value.r
     self.g = value.g
     self.b = value.b
+    self.a = value.a
+
   elseif type(value) == "string" then
-    local r, g, b = value:match "(%x%x)(%x%x)(%x%x)"
-    assert(r ~= nil)
-    self.r = tonumber(r, 16) / 255
-    self.g = tonumber(g, 16) / 255
-    self.b = tonumber(b, 16) / 255
+    self.a = 1
+
+    if value:sub(1, 1) ~= "#" then
+      -- TODO: parse color by name or function
+    else
+      value = value:sub(2)
+    end
+
+    local pattern
+    local div = 0xff
+    if #value == 3 then
+      pattern = "(%x)(%x)(%x)"
+      div = 0xf
+    elseif #value == 4 then
+      pattern = "(%x)(%x)(%x)(%x)"
+      div = 0xf
+    elseif #value == 6 then
+      pattern = "(%x%x)(%x%x)(%x%x)"
+    elseif #value == 8 then
+      pattern = "(%x%x)(%x%x)(%x%x)(%x%x)"
+    else
+      error "Not a valid color"
+    end
+    local r, g, b, a = value:match(pattern)
+    assert(r ~= nil, "Not a valid color")
+    self.r = tonumber(r, 16) / div
+    self.g = tonumber(g, 16) / div
+    self.b = tonumber(b, 16) / div
+    self.a = a ~= nil and tonumber(a, 16) / div or 1
+
   elseif value.r ~= nil then
     self.r = value.r
     self.g = value.g
     self.b = value.b
+    self.a = value.a or 1
+
   else
     local hue, saturation = value.h, value.s
     assert(hue ~= nil, saturation ~= nil)
@@ -113,6 +143,7 @@ function Color:set(value)
     self.r = r
     self.g = g
     self.b = b
+    self.a = value.a or 1
   end
 
   return self
@@ -127,10 +158,15 @@ function Color:rgb()
   return self.r, self.g, self.b
 end
 
---- Get hsv values
+--- Get rgba values
 --
--- @return hue, saturation, value, min_value
-function Color:hsv()
+-- @return red, green, blue, alpha
+function Color:rgba()
+  return self.r, self.g, self.b, self.a
+end
+
+
+function Color:_hsvm()
   local r, g, b = self.r, self.g, self.b
 
   local max, max_i = max_ind(r, g, b)
@@ -153,6 +189,23 @@ function Color:hsv()
   return hue, saturation, max, min
 end
 
+--- Get hsv values
+--
+-- @return hue, saturation, value
+function Color:hsv()
+  local h, s, v = self:_hsvm()
+  return h, s, v
+end
+
+--- Get hsv values
+--
+-- @return hue, saturation, value, alpha
+function Color:hsva()
+  local h, s, v = self:_hsvm()
+  return h, s, v, self.a
+end
+
+
 --- Get hsl values
 ---
 -- @return hue, saturation, lightness
@@ -164,6 +217,14 @@ function Color:hsl()
     or (max - lightness) / math.min(lightness, 1 - lightness)
 
   return hue, saturation, lightness
+end
+
+--- Get hsl values
+---
+-- @return hue, saturation, lightness, alpha
+function Color:hsla()
+  local h, s, l = self:hsl()
+  return h, s, l, self.a
 end
 
 
@@ -189,7 +250,7 @@ function Color:rotate(value)
 
   local h, s, v = self:hsv()
   h = (h + r) % 1
-  self:set {h = h, s = s, v = v}
+  self:set {h = h, s = s, v = v, a = self.a}
 
   return self
 end
@@ -211,9 +272,9 @@ end
 -- @return Color, self, Color
 function Color:analogous()
   local h, s, v = self:hsv()
-  return Color {h = (h - 1/12) % 1, s = s, v = v},
+  return Color {h = (h - 1/12) % 1, s = s, v = v, a = self.a},
     self,
-    Color {h = (h + 1/12) % 1, s = s, v = v}
+    Color {h = (h + 1/12) % 1, s = s, v = v, a = self.a}
 end
 
 --- Generate triadic color scheme
@@ -222,8 +283,8 @@ end
 function Color:triad()
   local h, s, v = self:hsv()
   return self,
-    Color {h = (h + 1/3) % 1, s = s, v = v},
-    Color {h = (h + 2/3) % 1, s = s, v = v}
+    Color {h = (h + 1/3) % 1, s = s, v = v, a = self.a},
+    Color {h = (h + 2/3) % 1, s = s, v = v, a = self.a}
 end
 
 --- Generate tetradic color scheme
@@ -232,21 +293,31 @@ end
 function Color:tetrad()
   local h, s, v = self:hsv()
   return self,
-    Color {h = (h + 1/4) % 1, s = s, v = v},
-    Color {h = (h + 2/4) % 1, s = s, v = v},
-    Color {h = (h + 3/4) % 1, s = s, v = v}
+    Color {h = (h + 1/4) % 1, s = s, v = v, a = self.a},
+    Color {h = (h + 2/4) % 1, s = s, v = v, a = self.a},
+    Color {h = (h + 3/4) % 1, s = s, v = v, a = self.a}
 end
 
 
 
 --- Get color in rgb hex notation
 function Color:__tostring()
-  return string.format(
-    "#%02x%02x%02x",
-    round(self.r * 255),
-    round(self.g * 255),
-    round(self.b * 255)
-  )
+  if self.a < 1 then
+    return string.format(
+      "#%02x%02x%02x%02x",
+      round(self.r * 0xff),
+      round(self.g * 0xff),
+      round(self.b * 0xff),
+      round(self.a * 0xff)
+    )
+  else
+    return string.format(
+      "#%02x%02x%02x",
+      round(self.r * 0xff),
+      round(self.g * 0xff),
+      round(self.b * 0xff)
+    )
+  end
 end
 
 --- Get inverted clone of color
@@ -259,6 +330,7 @@ function Color:__eq(other)
   return self.r == other.r
     and self.g == other.g
     and self.b == other.b
+    and self.a == other.a
 end
 
 

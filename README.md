@@ -7,6 +7,10 @@ Convert and manipulate color values.
 
 Use `luarocks install lua-color` or add folder to your project root.
 
+## Documentation
+
+The documentation is availabale [here](https://firanel.github.io/lua-color/index.html)
+or from the *docs* folder.
 
 ## Usage
 

@@ -267,6 +267,13 @@ end
 
 
 
+--- Generate complementary color
+--
+-- @return Color
+function Color:complement()
+  return Color(self):rotate(0.5)
+end
+
 --- Generate analogous color scheme
 --
 -- @return Color, self, Color

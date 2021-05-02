@@ -65,6 +65,10 @@ local Color = class(function (this, value)
   end
 end)
 
+--- Table of color names
+-- @field colorNames
+Color.colorNames = nil
+
 --- Clone color
 function Color:clone()
   return Color(self)
@@ -75,23 +79,84 @@ end
 -- @param value Color
 --
 -- @usage color:set "#f1f1f1"
+-- @usage color:set "rgba(241, 241, 241, 0.5)"
 -- @usage color:set { r = 0.255, g = 0.729, b = 0.412 }
+-- @usage color:set { 0.255, 0.729, 0.412 } -- same as above
 -- @usage color:set { h = 0.389, s = 0.65, v = 0.73 }
 -- @usage color:set(other_color)
 --
 -- @return self
 function Color:set(value)
+  assert(value)
+
+  -- from Color
   if value.__is_color then
     self.r = value.r
     self.g = value.g
     self.b = value.b
     self.a = value.a
 
+
   elseif type(value) == "string" then
     self.a = 1
 
     if value:sub(1, 1) ~= "#" then
-      -- TODO: parse color by name or function
+      if Color.colorNames then
+        local c = Color.colorNames[value]
+        if c then return self:set(c) end
+      end
+
+      local func, values = value:match "(%w+)[ %(]+([x ,.%x]+)"
+      if func == "rgb" then
+        local r, g, b = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
+        assert(r and g and b)
+        self.r = tonumber(r) / 0xff
+        self.g = tonumber(g) / 0xff
+        self.b = tonumber(b) / 0xff
+        return self
+      elseif func == "rgba" then
+        local r, g, b, a = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
+        assert(r and g and b and a)
+        self.r = tonumber(r) / 0xff
+        self.g = tonumber(g) / 0xff
+        self.b = tonumber(b) / 0xff
+        self.a = tonumber(a)
+        return self
+      elseif func == "hsv" then
+        local h, s, v = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
+        assert(h and s and v)
+        return self:set {
+          h = tonumber(h) / 360,
+          s = tonumber(s) / 100,
+          v = tonumber(v) / 100,
+        }
+      elseif func == "hsva" then
+        local h, s, v, a = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
+        assert(h and s and v and a)
+        return self:set {
+          h = tonumber(h) / 360,
+          s = tonumber(s) / 100,
+          v = tonumber(v) / 100,
+          a = tonumber(a)
+        }
+      elseif func == "hsl" then
+        local h, s, l = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
+        assert(h and s and l)
+        return self:set {
+          h = tonumber(h) / 360,
+          s = tonumber(s) / 100,
+          l = tonumber(l) / 100,
+        }
+      elseif func == "hsla" then
+        local h, s, v, a = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
+        assert(h and s and v and a)
+        return self:set {
+          h = tonumber(h) / 360,
+          s = tonumber(s) / 100,
+          l = tonumber(l) / 100,
+          a = tonumber(a)
+        }
+      end
     else
       value = value:sub(2)
     end
@@ -118,12 +183,19 @@ function Color:set(value)
     self.b = tonumber(b, 16) / div
     self.a = a ~= nil and tonumber(a, 16) / div or 1
 
+  -- table with rgb
+  elseif value[1] ~= nil then
+    self.r = value[1]
+    self.g = value[2] or 0
+    self.b = value[3] or 0
+    self.a = value[4] or 1
   elseif value.r ~= nil then
     self.r = value.r
-    self.g = value.g
-    self.b = value.b
+    self.g = value.g or 0
+    self.b = value.b or 0
     self.a = value.a or 1
 
+  -- table with hs?
   else
     local hue, saturation = value.h, value.s
     assert(hue ~= nil, saturation ~= nil)

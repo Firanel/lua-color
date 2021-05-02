@@ -53,6 +53,9 @@ local new_color = -color
 
 ### Generate color scheme
 ``` lua
+-- Complementary
+local complementary_color = color:complement()
+
 -- Analogous
 local new_a, orig, new_b = color:analogous()
 
@@ -61,10 +64,13 @@ local orig, new_a, new_b = color:triad()
 
 -- Tetradic
 local orig, new_a, new_b, new_c = color:tetrad()
+
+-- Combine
+-- Example: Analogous color scheme around complement
+local new_a, new_b, new_c = color:complement():analogous()
 ```
 
 ### Other
-
 ```lua
 -- Check if variable is color
 if Color.isColor(color) then print "It's a color!" end

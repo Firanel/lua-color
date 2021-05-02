@@ -1,8 +1,8 @@
---- Lua color library
---
--- Convert and manipulate color values.
+--- Parse, convert and manipulate color values.
 --
 -- All values are in [0,1], unless otherwise specified.
+--
+-- @classmod Color
 
 
 
@@ -43,15 +43,15 @@ end
 -- Color
 
 
+--- Color constructor
+-- @function Color:__call
+--
+-- @param value Color value (default: `nil`)
+--
+-- @see Color:set
+
+
 --- Color class
---
--- @param value Color in hex notation
---              or as {r=, g=, b=}
---              or as {h=, s=, v=}
---              or as {h=, s=, l=}
---              or another Color
---
--- @return Color
 local Color = class(function (this, value)
   this.__is_color = true
 
@@ -72,11 +72,12 @@ end
 
 --- Set color to value
 --
--- @param value Color in hex notation
---              or as {r=, g=, b=[, a=]}
---              or as {h=, s=, v=[, a=]}
---              or as {h=, s=, l=[, a=]}
---              or another Color object
+-- @param value Color
+--
+-- @usage color:set "#f1f1f1"
+-- @usage color:set { r = 0.255, g = 0.729, b = 0.412 }
+-- @usage color:set { h = 0.389, s = 0.65, v = 0.73 }
+-- @usage color:set(other_color)
 --
 -- @return self
 function Color:set(value)

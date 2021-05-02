@@ -1,0 +1,547 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Lua Color</h1>
+
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Metamethods">Metamethods</a></li>
+<li><a href="#Methods">Methods</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><strong>Color</strong></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>Color</code></h1>
+<p>Parse, convert and manipulate color values.</p>
+<p> All values are in [0,1], unless otherwise specified.</p>
+
+
+<h2><a href="#Metamethods">Metamethods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Color:__call">Color:__call (value)</a></td>
+	<td class="summary">Color constructor</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:__tostring">Color:__tostring ()</a></td>
+	<td class="summary">Get color in rgb hex notation</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:__unm">Color:__unm ()</a></td>
+	<td class="summary">Get inverted clone of color</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:__eq">Color:__eq (other)</a></td>
+	<td class="summary">Check if colors are equal</td>
+	</tr>
+</table>
+<h2><a href="#Methods">Methods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Color:clone">Color:clone ()</a></td>
+	<td class="summary">Clone color</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:set">Color:set (value)</a></td>
+	<td class="summary">Set color to value</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:rgb">Color:rgb ()</a></td>
+	<td class="summary">Get rgb values</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:rgba">Color:rgba ()</a></td>
+	<td class="summary">Get rgba values</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:hsv">Color:hsv ()</a></td>
+	<td class="summary">Get hsv values</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:hsva">Color:hsva ()</a></td>
+	<td class="summary">Get hsv values</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:hsl">Color:hsl ()</a></td>
+	<td class="summary">Get hsl values</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:hsla">Color:hsla ()</a></td>
+	<td class="summary">Get hsl values</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:rotate">Color:rotate (value)</a></td>
+	<td class="summary">Rotate hue of color</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:invert">Color:invert ()</a></td>
+	<td class="summary">Invert the color</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:complement">Color:complement ()</a></td>
+	<td class="summary">Generate complementary color</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:analogous">Color:analogous ()</a></td>
+	<td class="summary">Generate analogous color scheme</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:triad">Color:triad ()</a></td>
+	<td class="summary">Generate triadic color scheme</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:tetrad">Color:tetrad ()</a></td>
+	<td class="summary">Generate tetradic color scheme</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:isColor">Color:isColor (color)</a></td>
+	<td class="summary">Check whether <code>color</code> is a Color</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Metamethods"></a>Metamethods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Color:__call"></a>
+    <strong>Color:__call (value)</strong>
+    </dt>
+    <dd>
+    Color constructor
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+         Color value (default: <code>nil</code>)
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../index.html#Color:set">Color:set</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Color:__tostring"></a>
+    <strong>Color:__tostring ()</strong>
+    </dt>
+    <dd>
+    Get color in rgb hex notation
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:__unm"></a>
+    <strong>Color:__unm ()</strong>
+    </dt>
+    <dd>
+    Get inverted clone of color
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:__eq"></a>
+    <strong>Color:__eq (other)</strong>
+    </dt>
+    <dd>
+    Check if colors are equal
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">other</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Color:clone"></a>
+    <strong>Color:clone ()</strong>
+    </dt>
+    <dd>
+    Clone color
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:set"></a>
+    <strong>Color:set (value)</strong>
+    </dt>
+    <dd>
+    Set color to value
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+         Color
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        self
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">color:set <span class="string">"#f1f1f1"</span></pre></li>
+        <li><pre class="example">color:set { r = <span class="number">0.255</span>, g = <span class="number">0.729</span>, b = <span class="number">0.412</span> }</pre></li>
+        <li><pre class="example">color:set { h = <span class="number">0.389</span>, s = <span class="number">0.65</span>, v = <span class="number">0.73</span> }</pre></li>
+        <li><pre class="example">color:set(other_color)</pre></li>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Color:rgb"></a>
+    <strong>Color:rgb ()</strong>
+    </dt>
+    <dd>
+    Get rgb values
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        red, green, blue
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:rgba"></a>
+    <strong>Color:rgba ()</strong>
+    </dt>
+    <dd>
+    Get rgba values
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        red, green, blue, alpha
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:hsv"></a>
+    <strong>Color:hsv ()</strong>
+    </dt>
+    <dd>
+    Get hsv values
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        hue, saturation, value
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:hsva"></a>
+    <strong>Color:hsva ()</strong>
+    </dt>
+    <dd>
+    Get hsv values
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        hue, saturation, value, alpha
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:hsl"></a>
+    <strong>Color:hsl ()</strong>
+    </dt>
+    <dd>
+    Get hsl values
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        hue, saturation, lightness
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:hsla"></a>
+    <strong>Color:hsla ()</strong>
+    </dt>
+    <dd>
+    Get hsl values
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        hue, saturation, lightness, alpha
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:rotate"></a>
+    <strong>Color:rotate (value)</strong>
+    </dt>
+    <dd>
+    Rotate hue of color
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+
+<p> Angle as factor of a full turn [0,1]</p>
+<pre><code>          or as {deg=} degree
+          or as {rad=} radians
+</code></pre>
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        self
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:invert"></a>
+    <strong>Color:invert ()</strong>
+    </dt>
+    <dd>
+    Invert the color
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        self
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:complement"></a>
+    <strong>Color:complement ()</strong>
+    </dt>
+    <dd>
+    Generate complementary color
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Color
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:analogous"></a>
+    <strong>Color:analogous ()</strong>
+    </dt>
+    <dd>
+    Generate analogous color scheme
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Color, self, Color
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:triad"></a>
+    <strong>Color:triad ()</strong>
+    </dt>
+    <dd>
+    Generate triadic color scheme
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        self, Color, Color
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:tetrad"></a>
+    <strong>Color:tetrad ()</strong>
+    </dt>
+    <dd>
+    Generate tetradic color scheme
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        self, Color, Color, Color
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:isColor"></a>
+    <strong>Color:isColor (color)</strong>
+    </dt>
+    <dd>
+    Check whether <code>color</code> is a Color
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">color</span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        boolean
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2021-05-02 13:21:56 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

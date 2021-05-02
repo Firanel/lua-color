@@ -24,32 +24,54 @@
 
 <div id="navigation">
 <br/>
-<h1>ldoc</h1>
+<h1>Lua Color</h1>
 
 
 <h2>Contents</h2>
 <ul>
-<li><a href="#Functions">Functions</a></li>
+<li><a href="#Metamethods">Metamethods</a></li>
+<li><a href="#Methods">Methods</a></li>
 </ul>
 
 
-<h2>Modules</h2>
+<h2>Classes</h2>
 <ul class="nowrap">
-  <li><strong>init</strong></li>
+  <li><strong>Color</strong></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="topics/README.md.html">README</a></li>
 </ul>
 
 </div>
 
 <div id="content">
 
-<h1>Module <code>init</code></h1>
-<p>Lua color library
-<p> Convert and manipulate color values.</p>
-<p>
+<h1>Class <code>Color</code></h1>
+<p>Parse, convert and manipulate color values.</p>
 <p> All values are in [0,1], unless otherwise specified.</p>
 
 
-<h2><a href="#Functions">Functions</a></h2>
+<h2><a href="#Metamethods">Metamethods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Color:__call">Color:__call (value)</a></td>
+	<td class="summary">Color constructor</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:__tostring">Color:__tostring ()</a></td>
+	<td class="summary">Get color in rgb hex notation</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:__unm">Color:__unm ()</a></td>
+	<td class="summary">Get inverted clone of color</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color:__eq">Color:__eq (other)</a></td>
+	<td class="summary">Check if colors are equal</td>
+	</tr>
+</table>
+<h2><a href="#Methods">Methods</a></h2>
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#Color:clone">Color:clone ()</a></td>
@@ -108,20 +130,8 @@
 	<td class="summary">Generate tetradic color scheme</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Color:__tostring">Color:__tostring ()</a></td>
-	<td class="summary">Get color in rgb hex notation</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Color:__unm">Color:__unm ()</a></td>
-	<td class="summary">Get inverted clone of color</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Color:__eq">Color:__eq (other)</a></td>
-	<td class="summary">Check if colors are equal</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Color.isColor">Color.isColor (color)</a></td>
-	<td class="summary">Check whether `color` is a Color</td>
+	<td class="name" nowrap><a href="#Color:isColor">Color:isColor (color)</a></td>
+	<td class="summary">Check whether <code>color</code> is a Color</td>
 	</tr>
 </table>
 
@@ -129,7 +139,85 @@
 <br/>
 
 
-    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+    <h2 class="section-header "><a name="Metamethods"></a>Metamethods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Color:__call"></a>
+    <strong>Color:__call (value)</strong>
+    </dt>
+    <dd>
+    Color constructor
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">value</span>
+         Color value (default: <code>nil</code>)
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="index.html#Color:set">Color:set</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Color:__tostring"></a>
+    <strong>Color:__tostring ()</strong>
+    </dt>
+    <dd>
+    Get color in rgb hex notation
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:__unm"></a>
+    <strong>Color:__unm ()</strong>
+    </dt>
+    <dd>
+    Get inverted clone of color
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color:__eq"></a>
+    <strong>Color:__eq (other)</strong>
+    </dt>
+    <dd>
+    Check if colors are equal
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">other</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
 
     <dl class="function">
     <dt>
@@ -157,12 +245,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">value</span>
-         Color in hex notation
-              or as {r=, g=, b=[, a=]}
-              or as {h=, s=, v=[, a=]}
-              or as {h=, s=, l=[, a=]}
-              or another Color object
-
+         Color
         </li>
     </ul>
 
@@ -174,6 +257,13 @@
 
 
 
+    <h3>Usage:</h3>
+    <ul>
+        <li><pre class="example">color:set <span class="string">"#f1f1f1"</span></pre></li>
+        <li><pre class="example">color:set { r = <span class="number">0.255</span>, g = <span class="number">0.729</span>, b = <span class="number">0.412</span> }</pre></li>
+        <li><pre class="example">color:set { h = <span class="number">0.389</span>, s = <span class="number">0.65</span>, v = <span class="number">0.73</span> }</pre></li>
+        <li><pre class="example">color:set(other_color)</pre></li>
+    </ul>
 
 </dd>
     <dt>
@@ -301,9 +391,12 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">value</span>
-         Angle as factor of a full turn [0,1]
-              or as {deg=} degree
-              or as {rad=} radians
+
+<p> Angle as factor of a full turn [0,1]</p>
+<pre><code>          or as {deg=} degree
+          or as {rad=} radians
+</code></pre>
+
 
         </li>
     </ul>
@@ -414,64 +507,18 @@
 
 </dd>
     <dt>
-    <a name = "Color:__tostring"></a>
-    <strong>Color:__tostring ()</strong>
+    <a name = "Color:isColor"></a>
+    <strong>Color:isColor (color)</strong>
     </dt>
     <dd>
-    Get color in rgb hex notation
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Color:__unm"></a>
-    <strong>Color:__unm ()</strong>
-    </dt>
-    <dd>
-    Get inverted clone of color
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Color:__eq"></a>
-    <strong>Color:__eq (other)</strong>
-    </dt>
-    <dd>
-    Check if colors are equal
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">other</span>
-
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Color.isColor"></a>
-    <strong>Color.isColor (color)</strong>
-    </dt>
-    <dd>
-    Check whether `color` is a Color
+    Check whether <code>color</code> is a Color
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">color</span>
+
+
 
         </li>
     </ul>
@@ -493,7 +540,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2021-05-02 11:00:12 </i>
+<i style="float:right;">Last updated 2021-05-02 13:21:56 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

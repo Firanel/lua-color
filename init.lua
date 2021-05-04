@@ -36,6 +36,13 @@ local function hcm_to_rgb(h, c, m)
   return r + m, g + m, b + m
 end
 
+local function tonumPercent(str)
+  if str:sub(-1) == "%" then
+    return tonumber(str:sub(1, #str - 1)) / 100
+  end
+  return tonumber(str)
+end
+
 
 
 -- Color
@@ -99,6 +106,7 @@ end
 --   <li>`hsla(h, s, l, a)`</li>
 --   <li>`hsv(h, s, v)`</li>
 --   <li>`hsva(h, s, v, a)`</li>
+--   <li>`cmyk(c, m, y, k)`</li>
 --   </ul>
 --   Values are in the same ranges as in css ([0;255] for rgb, [0;1] for alpha, ...)<br>
 --   functions can be specified in a simplified syntax: `rgb(r, g, b) == rgb r g b`
@@ -117,6 +125,7 @@ end
 --
 -- @usage color:set "#f1f1f1"
 -- @usage color:set "rgba(241, 241, 241, 0.5)"
+-- @usage color:set "hsl 180 100% 20%"
 -- @usage color:set { r = 0.255, g = 0.729, b = 0.412 }
 -- @usage color:set { 0.255, 0.729, 0.412 } -- same as above
 -- @usage color:set { h = 0.389, s = 0.65, v = 0.73 }
@@ -140,7 +149,7 @@ function Color:set(value)
         if c then return self:set(c) end
       end
 
-      local func, values = value:match "(%w+)[ %(]+([x ,.%x]+)"
+      local func, values = value:match "(%w+)[ %(]+([x ,.%x%%]+)"
       if func == "rgb" then
         local r, g, b = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
         assert(r and g and b)
@@ -149,46 +158,55 @@ function Color:set(value)
         self.b = tonumber(b) / 0xff
         return self
       elseif func == "rgba" then
-        local r, g, b, a = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
+        local r, g, b, a = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+%%?)"
         assert(r and g and b and a)
         self.r = tonumber(r) / 0xff
         self.g = tonumber(g) / 0xff
         self.b = tonumber(b) / 0xff
-        self.a = tonumber(a)
+        self.a = tonumPercent(a)
         return self
       elseif func == "hsv" then
-        local h, s, v = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
+        local h, s, v = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
         assert(h and s and v)
         return self:set {
           h = tonumber(h) / 360,
-          s = tonumber(s) / 100,
-          v = tonumber(v) / 100,
+          s = tonumPercent(s),
+          v = tonumPercent(v),
         }
       elseif func == "hsva" then
-        local h, s, v, a = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
+        local h, s, v, a = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
         assert(h and s and v and a)
         return self:set {
           h = tonumber(h) / 360,
-          s = tonumber(s) / 100,
-          v = tonumber(v) / 100,
-          a = tonumber(a)
+          s = tonumPercent(s),
+          v = tonumPercent(v),
+          a = tonumPercent(a)
         }
       elseif func == "hsl" then
-        local h, s, l = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
+        local h, s, l = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
         assert(h and s and l)
         return self:set {
           h = tonumber(h) / 360,
-          s = tonumber(s) / 100,
-          l = tonumber(l) / 100,
+          s = tonumPercent(s),
+          l = tonumPercent(l),
         }
       elseif func == "hsla" then
-        local h, s, v, a = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
+        local h, s, v, a = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
         assert(h and s and v and a)
         return self:set {
           h = tonumber(h) / 360,
-          s = tonumber(s) / 100,
-          l = tonumber(l) / 100,
-          a = tonumber(a)
+          s = tonumPercent(s),
+          l = tonumPercent(l),
+          a = tonumPercent(a)
+        }
+      elseif func == "cmyk" then
+        local c, m, y, k = values:match "([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
+        assert(c and m and y and k)
+        return self:set {
+          c = tonumPercent(c),
+          m = tonumPercent(m),
+          y = tonumPercent(y),
+          k = tonumPercent(k),
         }
       end
     else
@@ -229,6 +247,12 @@ function Color:set(value)
     self.b = value.b or 0
     self.a = value.a or 1
 
+  elseif value.c ~= nil then
+    local k = 1 - value.k
+    self.r = (1 - value.c) * k
+    self.g = (1 - value.m) * k
+    self.b = (1 - value.y) * k
+
   -- table with hs?
   else
     local hue, saturation = value.h, value.s
@@ -253,6 +277,12 @@ function Color:set(value)
     self.a = value.a or 1
   end
 
+  local r, g, b, a = self.r, self.g, self.b, self.a
+  assert(r and g and b and a, "Color invalid")
+  assert(r >= 0 and r <= 1, "red value out of bounds")
+  assert(g >= 0 and g <= 1, "green value out of bounds")
+  assert(b >= 0 and b <= 1, "blue value out of bounds")
+  assert(a >= 0 and a <= 1, "alpha value out of bounds")
   return self
 end
 
@@ -347,6 +377,22 @@ end
 function Color:hsla()
   local h, s, l = self:hsl()
   return h, s, l, self.a
+end
+
+--- Get cmyk values.
+--
+-- @treturn number[0;1] cyan
+-- @treturn number[0;1] magenta
+-- @treturn number[0;1] yellow
+-- @treturn number[0;1] key
+function Color:cmyk()
+  local r, g, b = self.r, self.g, self.b
+  local K = math.max(r, g, b)
+  local k = 1 - K
+  local c = (K - r) / K
+  local m = (K - g) / K
+  local y = (K - b) / K
+  return c, m, y, k
 end
 
 

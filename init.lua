@@ -233,25 +233,26 @@ function Color:set(value)
     self.r = tonumber(r, 16) / div
     self.g = tonumber(g, 16) / div
     self.b = tonumber(b, 16) / div
-    self.a = a ~= nil and tonumber(a, 16) / div or 1
+    self.a = a ~= nil and tonumber(a, 16) / div.a or 1
 
   -- table with rgb
   elseif value[1] ~= nil then
     self.r = value[1]
-    self.g = value[2] or 0
-    self.b = value[3] or 0
-    self.a = value[4] or 1
+    self.g = value[2]
+    self.b = value[3]
+    self.a = value[4] or self.a or 1
   elseif value.r ~= nil then
     self.r = value.r
-    self.g = value.g or 0
-    self.b = value.b or 0
-    self.a = value.a or 1
+    self.g = value.g
+    self.b = value.b
+    self.a = value.a or self.a or 1
 
   elseif value.c ~= nil then
     local k = 1 - value.k
     self.r = (1 - value.c) * k
     self.g = (1 - value.m) * k
     self.b = (1 - value.y) * k
+    self.a = 1
 
   -- table with hs?
   else
@@ -274,7 +275,7 @@ function Color:set(value)
     self.r = r
     self.g = g
     self.b = b
-    self.a = value.a or 1
+    self.a = value.a or self.a or 1
   end
 
   local r, g, b, a = self.r, self.g, self.b, self.a
@@ -435,6 +436,26 @@ function Color:invert()
   return self
 end
 
+--- Reduce saturation to 0.
+--
+-- @treturn Color self
+function Color:grey()
+  local h, _, v = self:hsv()
+  self:set {h=h, s=0, v=v, a=self.a}
+  return self
+end
+
+--- Set to black or white depending on lightness.
+--
+-- @treturn Color self
+function Color:blackOrWhite()
+  local _, _, lightness = self:hsl()
+  local v = lightness > .5 and 1 or 0
+  self.r = v
+  self.g = v
+  self.b = v
+  return self
+end
 
 
 --- Generate complementary color.
@@ -480,6 +501,42 @@ function Color:tetrad()
     Color {h = (h + 1/4) % 1, s = s, v = v, a = self.a},
     Color {h = (h + 2/4) % 1, s = s, v = v, a = self.a},
     Color {h = (h + 3/4) % 1, s = s, v = v, a = self.a}
+end
+
+--- Generate compound color scheme.
+--
+-- @treturn Color
+-- @treturn Color self
+-- @treturn Color
+function Color:compound()
+  local ca, _, cb = self:complement():analogous()
+  return ca, self, cb
+end
+
+--- Generate evenly spaced color scheme.
+-- <br>
+-- Generalization of triad and tetrad.
+--
+-- @tparam int     n Return n colors
+-- @tparam ?number r Space colors over r rotations (Default: 1)
+--
+-- @treturn {Color,...} Table with n colors including self at index 1
+function Color:evenlySpaced(n, r)
+  assert(n > 0, "n needs to be greater than 0")
+  r = r or 1
+
+  local res = {self}
+
+  local rot = r / n
+  local h, s, v = self:hsv()
+  local a = self.a
+
+  for i = 1, n - 1 do
+    h = (h + rot) % 1
+    table.insert(res, Color {h=h, s=s, v=v, a=a})
+  end
+
+  return res
 end
 
 

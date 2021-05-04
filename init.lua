@@ -1,7 +1,5 @@
 --- Parse, convert and manipulate color values.
 --
--- All values are in [0,1], unless otherwise specified.
---
 -- @classmod Color
 
 
@@ -43,15 +41,17 @@ end
 -- Color
 
 
---- Color constructor
+--- Color constructor.
+--
 -- @function Color:__call
 --
--- @param value Color value (default: `nil`)
+-- @tparam ?string|table|Color value Color value (default: `nil`)
 --
 -- @see Color:set
 
 
 --- Color class
+--
 local Color = class(function (this, value)
   this.__is_color = true
 
@@ -65,27 +65,61 @@ local Color = class(function (this, value)
   end
 end)
 
---- Table of color names
--- @field colorNames
+--- Table of color names.
+-- <br>
+-- Can be set to a table containing named colors to be used by `Color:set`
+-- <br>
+-- Values must be compatible with `Color:set`
+-- <br>
+-- Default: `nil`
+--
+-- @usage  Color.colorNames = { red = "#ff0000", green = "#00ff00", blue = "#0000ff" }
+--local color = Color "green"
 Color.colorNames = nil
 
 --- Clone color
+--
+-- @treturn Color copy
 function Color:clone()
   return Color(self)
 end
 
---- Set color to value
+--- Set color to value.
+-- <br>
+-- Called by constructor
+-- <br><br>
+-- Possible value types:
+-- <ul>
+--  <li>`Color`</li>
+--  <li>color name as specified in `Color.colorNames`</li>
+--  <li>css style functions as string:<ul>
+--   <li>`rgb(r, g, b)`</li>
+--   <li>`rgba(r, g, b, a)`</li>
+--   <li>`hsl(h, s, l)`</li>
+--   <li>`hsla(h, s, l, a)`</li>
+--   <li>`hsv(h, s, v)`</li>
+--   <li>`hsva(h, s, v, a)`</li>
+--   </ul>
+--   Values are in the same ranges as in css ([0;255] for rgb, [0;1] for alpha, ...)<br>
+--   functions can be specified in a simplified syntax: `rgb(r, g, b) == rgb r g b`
+--  </li>
+--  <li>hex string: `#rgb` | `#rgba` | `#rrggbb` | `#rrggbbaa` (`#` can be omitted)</li>
+--  <li>rgb values in [0;1]: `{r, g, b[, a]}` | `{r=r, g=g, b=b[, a=a]}`</li>
+--  <li>hsv values in [0;1]: `{h=h, s=s, v=v[, a=a]}`</li>
+--  <li>hsl values in [0;1]: `{h=h, s=s, l=l[, a=a]}`</li>
+-- </ul>
 --
--- @param value Color
+-- @see Color:__call
+--
+-- @tparam string|table|Color value Color
+--
+-- @treturn Color self
 --
 -- @usage color:set "#f1f1f1"
 -- @usage color:set "rgba(241, 241, 241, 0.5)"
 -- @usage color:set { r = 0.255, g = 0.729, b = 0.412 }
 -- @usage color:set { 0.255, 0.729, 0.412 } -- same as above
 -- @usage color:set { h = 0.389, s = 0.65, v = 0.73 }
--- @usage color:set(other_color)
---
--- @return self
 function Color:set(value)
   assert(value)
 
@@ -224,16 +258,21 @@ end
 
 
 
---- Get rgb values
+--- Get rgb values.
 --
--- @return red, green, blue
+-- @treturn number[0;1] red
+-- @treturn number[0;1] green
+-- @treturn number[0;1] blue
 function Color:rgb()
   return self.r, self.g, self.b
 end
 
---- Get rgba values
+--- Get rgba values.
 --
--- @return red, green, blue, alpha
+-- @treturn number[0;1] red
+-- @treturn number[0;1] green
+-- @treturn number[0;1] blue
+-- @treturn number[0;1] alpha
 function Color:rgba()
   return self.r, self.g, self.b, self.a
 end
@@ -262,26 +301,33 @@ function Color:_hsvm()
   return hue, saturation, max, min
 end
 
---- Get hsv values
+--- Get hsv values.
 --
--- @return hue, saturation, value
+-- @treturn number[0;1] hue
+-- @treturn number[0;1] saturation
+-- @treturn number[0;1] value
 function Color:hsv()
   local h, s, v = self:_hsvm()
   return h, s, v
 end
 
---- Get hsv values
+--- Get hsv values.
 --
--- @return hue, saturation, value, alpha
+-- @treturn number[0;1] hue
+-- @treturn number[0;1] saturation
+-- @treturn number[0;1] value
+-- @treturn number[0;1] alpha
 function Color:hsva()
   local h, s, v = self:_hsvm()
   return h, s, v, self.a
 end
 
 
---- Get hsl values
----
--- @return hue, saturation, lightness
+--- Get hsl values.
+--
+-- @treturn number[0;1] hue
+-- @treturn number[0;1] saturation
+-- @treturn number[0;1] lightness
 function Color:hsl()
   local hue, _, max, min = self:hsv()
   local lightness = (max + min) / 2
@@ -292,9 +338,12 @@ function Color:hsl()
   return hue, saturation, lightness
 end
 
---- Get hsl values
----
--- @return hue, saturation, lightness, alpha
+--- Get hsl values.
+--
+-- @treturn number[0;1] hue
+-- @treturn number[0;1] saturation
+-- @treturn number[0;1] lightness
+-- @treturn number[0;1] alpha
 function Color:hsla()
   local h, s, l = self:hsl()
   return h, s, l, self.a
@@ -302,13 +351,15 @@ end
 
 
 
---- Rotate hue of color
+--- Rotate hue of color.
 --
--- @param value Angle as factor of a full turn [0,1]
---              or as {deg=} degree
---              or as {rad=} radians
+-- @tparam number[0;1]|table value Part of full turn or table containing degree or radians
 --
--- @return self
+-- @treturn Color self
+--
+-- @usage color:rotate(0.5)
+-- @usage color:rotate {deg=180}
+-- @usage color:rotate {rad=math.pi}
 function Color:rotate(value)
   local r
   if type(value) == "number" then
@@ -328,9 +379,9 @@ function Color:rotate(value)
   return self
 end
 
---- Invert the color
+--- Invert the color.
 --
--- @return self
+-- @treturn Color self
 function Color:invert()
   self.r = 1 - self.r
   self.g = 1 - self.g
@@ -340,16 +391,18 @@ end
 
 
 
---- Generate complementary color
+--- Generate complementary color.
 --
--- @return Color
+-- @treturn Color
 function Color:complement()
   return Color(self):rotate(0.5)
 end
 
---- Generate analogous color scheme
+--- Generate analogous color scheme.
 --
--- @return Color, self, Color
+-- @treturn Color
+-- @treturn Color self
+-- @treturn Color
 function Color:analogous()
   local h, s, v = self:hsv()
   return Color {h = (h - 1/12) % 1, s = s, v = v, a = self.a},
@@ -357,9 +410,11 @@ function Color:analogous()
     Color {h = (h + 1/12) % 1, s = s, v = v, a = self.a}
 end
 
---- Generate triadic color scheme
+--- Generate triadic color scheme.
 --
--- @return self, Color, Color
+-- @treturn Color self
+-- @treturn Color
+-- @treturn Color
 function Color:triad()
   local h, s, v = self:hsv()
   return self,
@@ -367,9 +422,12 @@ function Color:triad()
     Color {h = (h + 2/3) % 1, s = s, v = v, a = self.a}
 end
 
---- Generate tetradic color scheme
+--- Generate tetradic color scheme.
 --
--- @return self, Color, Color, Color
+-- @treturn Color self
+-- @treturn Color
+-- @treturn Color
+-- @treturn Color
 function Color:tetrad()
   local h, s, v = self:hsv()
   return self,
@@ -380,7 +438,11 @@ end
 
 
 
---- Get color in rgb hex notation
+--- Get color in rgb hex notation.
+-- <br>
+-- only adds alpha value if `color.a < 1`
+--
+-- @treturn string `#rrggbb` | `#rrggbbaa`
 function Color:__tostring()
   if self.a < 1 then
     return string.format(
@@ -400,12 +462,18 @@ function Color:__tostring()
   end
 end
 
---- Get inverted clone of color
+--- Get inverted clone of color.
+--
+-- @treturn Color
 function Color:__unm()
   return Color(self):invert()
 end
 
---- Check if colors are equal
+--- Check if colors are equal.
+--
+-- @tparam Color other
+--
+-- @treturn boolean all values are equal
 function Color:__eq(other)
   return self.r == other.r
     and self.g == other.g
@@ -415,11 +483,13 @@ end
 
 
 
---- Check whether `color` is a Color
+--- Check whether `color` is a Color.
 --
 -- @param color
 --
--- @return boolean
+-- @treturn boolean is a color
+--
+-- @usage if Color.isColor(color) then print "It's a color!" end
 function Color.isColor(color)
   return color ~= nil and color.__is_color == true
 end

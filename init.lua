@@ -56,9 +56,20 @@ end
 --
 -- @see Color:set
 
+--- Red component.
+-- @field r
+
+--- Green component.
+-- @field g
+
+--- Blue component.
+-- @field b
+
+--- Alpha component.
+-- @field a
+
 
 --- Color class
---
 local Color = class(function (this, value)
   this.__is_color = true
 
@@ -515,7 +526,7 @@ end
 
 --- Generate evenly spaced color scheme.
 -- <br>
--- Generalization of triad and tetrad.
+-- Generalization of `triad` and `tetrad`.
 --
 -- @tparam int     n Return n colors
 -- @tparam ?number r Space colors over r rotations (Default: 1)

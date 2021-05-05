@@ -26,6 +26,9 @@
 <br/>
 <h1>Lua Color</h1>
 
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
 
 <h2>Contents</h2>
 <ul>
@@ -38,6 +41,10 @@
 <h2>Classes</h2>
 <ul class="nowrap">
   <li><strong>Color</strong></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/lua-color.colors.X11.html">lua-color.colors.X11</a></li>
 </ul>
 <h2>Topics</h2>
 <ul class="">
@@ -57,6 +64,22 @@
 
 <h2><a href="#Fields">Fields</a></h2>
 <table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Color.r">Color.r</a></td>
+	<td class="summary">Red component.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color.g">Color.g</a></td>
+	<td class="summary">Green component.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color.b">Color.b</a></td>
+	<td class="summary">Blue component.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Color.a">Color.a</a></td>
+	<td class="summary">Alpha component.</td>
+	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Color.colorNames">Color.colorNames</a></td>
 	<td class="summary">Table of color names.</td>
@@ -173,15 +196,99 @@
 
     <dl class="function">
     <dt>
+    <a name = "Color.r"></a>
+    <strong>Color.r</strong>
+    </dt>
+    <dd>
+    Red component.
+
+
+    <ul>
+        <li><span class="parameter">r</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color.g"></a>
+    <strong>Color.g</strong>
+    </dt>
+    <dd>
+    Green component.
+
+
+    <ul>
+        <li><span class="parameter">g</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color.b"></a>
+    <strong>Color.b</strong>
+    </dt>
+    <dd>
+    Blue component.
+
+
+    <ul>
+        <li><span class="parameter">b</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Color.a"></a>
+    <strong>Color.a</strong>
+    </dt>
+    <dd>
+    Alpha component.
+
+
+    <ul>
+        <li><span class="parameter">a</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "Color.colorNames"></a>
     <strong>Color.colorNames</strong>
     </dt>
     <dd>
     Table of color names.
  <br>
- Can be set to a table containing named colors to be used by <a href="../index.html#Color:set">Color:set</a>
+ Can be set to a table containing named colors to be used by <a href="../classes/Color.html#Color:set">Color:set</a>
  <br>
- Values must be compatible with <a href="../index.html#Color:set">Color:set</a>
+ Values must be compatible with <a href="../classes/Color.html#Color:set">Color:set</a>
  <br>
  Default: <code>nil</code>
 
@@ -212,7 +319,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">value</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a>, <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a> or <a class="type" href="../index.html#">Color</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a>, <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a> or <a class="type" href="../classes/Color.html#">Color</a></span>
          Color value (default: <code>nil</code>)
         </li>
     </ul>
@@ -221,7 +328,7 @@
 
     <h3>See also:</h3>
     <ul>
-         <a href="../index.html#Color:set">Color:set</a>
+         <a href="../classes/Color.html#Color:set">Color:set</a>
     </ul>
 
 
@@ -260,7 +367,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
 
 
 
@@ -281,7 +388,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">other</span>
-            <span class="types"><a class="type" href="../index.html#">Color</a></span>
+            <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
 
 
 
@@ -315,7 +422,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
         copy
     </ol>
 
@@ -334,8 +441,8 @@
  <br><br>
  Possible value types:
  <ul>
-  <li><a href="../index.html#">Color</a></li>
-  <li>color name as specified in <a href="../index.html#Color.colorNames">Color.colorNames</a></li>
+  <li><a href="../classes/Color.html#">Color</a></li>
+  <li>color name as specified in <a href="../classes/Color.html#Color.colorNames">Color.colorNames</a></li>
   <li>css style functions as string:<ul>
    <li><code>rgb(r, g, b)</code></li>
    <li><code>rgba(r, g, b, a)</code></li>
@@ -358,7 +465,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">value</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a>, <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a> or <a class="type" href="../index.html#">Color</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.4">string</a>, <a class="type" href="https://www.lua.org/manual/5.1/manual.html#5.5">table</a> or <a class="type" href="../classes/Color.html#">Color</a></span>
          Color
         </li>
     </ul>
@@ -366,14 +473,14 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
         self
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="../index.html#Color:__call">Color:__call</a>
+         <a href="../classes/Color.html#Color:__call">Color:__call</a>
     </ul>
 
     <h3>Usage:</h3>
@@ -600,7 +707,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
         self
     </ol>
 
@@ -626,7 +733,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
         self
     </ol>
 
@@ -646,7 +753,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
         self
     </ol>
 
@@ -666,7 +773,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
         self
     </ol>
 
@@ -686,7 +793,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
 
 
 
@@ -708,15 +815,15 @@
     <h3>Returns:</h3>
     <ol>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
 
 
 </li>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
         self</li>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
 
 
 </li>
@@ -738,15 +845,15 @@
     <h3>Returns:</h3>
     <ol>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
         self</li>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
 
 
 </li>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
 
 
 </li>
@@ -768,20 +875,20 @@
     <h3>Returns:</h3>
     <ol>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
         self</li>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
 
 
 </li>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
 
 
 </li>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
 
 
 </li>
@@ -803,15 +910,15 @@
     <h3>Returns:</h3>
     <ol>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
 
 
 </li>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
         self</li>
         <li>
-           <span class="types"><a class="type" href="../index.html#">Color</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">Color</a></span>
 
 
 </li>
@@ -828,7 +935,7 @@
     <dd>
     Generate evenly spaced color scheme.
  <br>
- Generalization of triad and tetrad.
+ Generalization of <a href="../classes/Color.html#Color:triad">triad</a> and <a href="../classes/Color.html#Color:tetrad">tetrad</a>.
 
 
     <h3>Parameters:</h3>
@@ -846,7 +953,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../index.html#">{Color,...}</a></span>
+           <span class="types"><a class="type" href="../classes/Color.html#">{Color,...}</a></span>
         Table with n colors including self at index 1
     </ol>
 
@@ -893,7 +1000,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2021-05-04 15:37:35 </i>
+<i style="float:right;">Last updated 2021-05-05 11:37:46 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

@@ -468,6 +468,21 @@ function Color:blackOrWhite()
   return self
 end
 
+--- Mix two colors together.
+--
+-- @tparam Color other
+-- @tparam number strength 0 results in self, 1 results in other (Default: 0.5)
+--
+-- @treturn Color self
+function Color:mix(other, strength)
+  if strength == nil then strength = 0.5 end
+  self.r = self.r * (1 - strength) + other.r * strength
+  self.g = self.g * (1 - strength) + other.g * strength
+  self.b = self.b * (1 - strength) + other.b * strength
+  self.a = self.a * (1 - strength) + other.a * strength
+  return self
+end
+
 
 --- Generate complementary color.
 --
@@ -593,6 +608,19 @@ function Color:__eq(other)
     and self.g == other.g
     and self.b == other.b
     and self.a == other.a
+end
+
+--- Mix two colors evenly.
+--
+-- @tparam Color a first color
+-- @tparam Color b second color
+--
+-- @treturn Color new color
+--
+-- @see Color:mix
+function Color.__add(a, b)
+  assert(Color.isColor(a) and Color.isColor(b), "Can only add two colors.")
+  return Color(a):mix(b)
 end
 
 

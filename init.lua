@@ -70,18 +70,17 @@ end
 
 
 --- Color class
-local Color = class(function (this, value)
-  this.__is_color = true
-
+local Color = class(nil, function (this, value)
   if value then
     this:set(value)
-  else
-    this.r = 0
-    this.g = 0
-    this.b = 0
-    this.a = 1
   end
-end)
+end, {
+  __is_color = true,
+  r = 0,
+  g = 0,
+  b = 0,
+  a = 1,
+})
 
 --- Table of color names.
 -- <br>
@@ -484,6 +483,7 @@ function Color:mix(other, strength)
 end
 
 
+
 --- Generate complementary color.
 --
 -- @treturn Color
@@ -621,6 +621,20 @@ end
 function Color.__add(a, b)
   assert(Color.isColor(a) and Color.isColor(b), "Can only add two colors.")
   return Color(a):mix(b)
+end
+
+--- Complement of even mix.
+--
+-- @tparam Color a first color
+-- @tparam Color b second color
+--
+-- @treturn Color new color
+--
+-- @see Color:mix
+-- @see Color.__add
+function Color.__sub(a, b)
+  assert(Color.isColor(a) and Color.isColor(b), "Can only add two colors.")
+  return Color(a):mix(b):rotate(0.5)
 end
 
 

@@ -18,8 +18,8 @@
 --------------------------------------------------------------------------------
 --
 
-local function class(base, init)
-  local c = {}    -- a new class instance
+local function class(base, init, defaults)
+  local c = defaults or {}    -- a new class instance
   if not init and type(base) == 'function' then
     init = base
     base = nil

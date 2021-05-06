@@ -251,11 +251,11 @@ function Color:set(value)
     self.g = value[2]
     self.b = value[3]
     self.a = value[4] or self.a or 1
-  elseif value.r ~= nil then
-    self.r = value.r
-    self.g = value.g
-    self.b = value.b
-    self.a = value.a or self.a or 1
+  elseif value.r ~= nil or value.g ~= nil or value.b ~= nil then
+    self.r = value.r or self.r
+    self.g = value.g or self.g
+    self.b = value.b or self.b
+    self.a = value.a or self.a
 
   elseif value.c ~= nil then
     local k = 1 - value.k
@@ -457,10 +457,12 @@ end
 
 --- Set to black or white depending on lightness.
 --
+-- @tparam ?number[0;1] lightness Cutoff point (Default: 0.5)
+--
 -- @treturn Color self
-function Color:blackOrWhite()
-  local _, _, lightness = self:hsl()
-  local v = lightness > .5 and 1 or 0
+function Color:blackOrWhite(lightness)
+  local _, _, l = self:hsl()
+  local v = l > lightness and 1 or 0
   self.r = v
   self.g = v
   self.b = v
@@ -591,13 +593,6 @@ function Color:__tostring()
   end
 end
 
---- Get inverted clone of color.
---
--- @treturn Color
-function Color:__unm()
-  return Color(self):invert()
-end
-
 --- Check if colors are equal.
 --
 -- @tparam Color other
@@ -608,6 +603,29 @@ function Color:__eq(other)
     and self.g == other.g
     and self.b == other.b
     and self.a == other.a
+end
+
+function Color:__pairs()
+  local function iter(tbl, k)
+    if k == nil then
+      return "r", self.r
+    elseif k == "r" then
+      return "g", self.g
+    elseif k == "g" then
+      return "b", self.b
+    elseif k == "b" then
+      return "a", self.a
+    end
+  end
+
+  return iter, self, nil
+end
+
+--- Get inverted clone of color.
+--
+-- @treturn Color
+function Color:__unm()
+  return Color(self):invert()
 end
 
 --- Mix two colors evenly.

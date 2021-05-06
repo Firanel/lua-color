@@ -1,7 +1,10 @@
 project = "Lua Color"
 package = "lua-color"
 
-file = "init.lua"
+file = {
+     "init.lua",
+     "colors"
+}
 dir = "docs"
 
 readme = "README.md"

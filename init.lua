@@ -116,6 +116,8 @@ end
 --   <li>`hsla(h, s, l, a)`</li>
 --   <li>`hsv(h, s, v)`</li>
 --   <li>`hsva(h, s, v, a)`</li>
+--   <li>`hwb(h, w, b)`</li>
+--   <li>`hwba(h, w, b, a)`</li>
 --   <li>`cmyk(c, m, y, k)`</li>
 --   </ul>
 --   Values are in the same ranges as in css ([0;255] for rgb, [0;1] for alpha, ...)<br>
@@ -125,6 +127,7 @@ end
 --  <li>rgb values in [0;1]: `{r, g, b[, a]}` | `{r=r, g=g, b=b[, a=a]}`</li>
 --  <li>hsv values in [0;1]: `{h=h, s=s, v=v[, a=a]}`</li>
 --  <li>hsl values in [0;1]: `{h=h, s=s, l=l[, a=a]}`</li>
+--  <li>hwb values in [0;1]: `{h=h, w=w, b=b[, a=a]}`</li>
 --  <li>cmyk values in [0;1]: `{c=c, m=m, y=y, k=k}`</li>
 --  <li>single set mode, table with any combination of the following: <ul>
 --   <li>`red`</li>
@@ -135,13 +138,15 @@ end
 --   <li>`saturation`</li>
 --   <li>`value`</li>
 --   <li>`lightness`</li>
+--   <li>`whiteness`</li>
+--   <li>`blackness`</li>
 --   <li>`cyan`</li>
 --   <li>`magenta`</li>
 --   <li>`yellow`</li>
 --   <li>`key`</li>
 --   </ul>
 --   All values are in `[0;1]`.<br>
---   They will be applied in the order: `rgba -> hsl -> hsv -> cmyk`<br>
+--   They will be applied in the order: `rgba -> hsl -> hwb -> hsv -> cmyk`<br>
 --   If `lightness` is given, saturation is treated as hsl saturation,
 --   otherwise it will be treated as hsv saturation.
 --  </li>
@@ -229,6 +234,23 @@ function Color:set(value)
           l = tonumPercent(l),
           a = tonumPercent(a)
         }
+      elseif func == "hwb" then
+        local h, w, b = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
+        assert(h and w and b)
+        return self:set {
+          h = tonumber(h) / 360,
+          w = tonumPercent(w),
+          b = tonumPercent(b),
+        }
+      elseif func == "hwba" then
+        local h, w, b, a = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
+        assert(h and w and b and a)
+        return self:set {
+          h = tonumber(h) / 360,
+          w = tonumPercent(w),
+          b = tonumPercent(b),
+          a = tonumPercent(a)
+        }
       elseif func == "cmyk" then
         local c, m, y, k = values:match "([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
         assert(c and m and y and k)
@@ -286,6 +308,11 @@ function Color:set(value)
 
   -- table with hs[vl]
   elseif value.h ~= nil then
+    if value.w ~= nil then -- hwb
+      value.v = 1 - value.b
+      value.s = 1 - value.w / value.v
+    end
+
     local hue, saturation = value.h, value.s
     assert(hue ~= nil, saturation ~= nil)
 
@@ -318,6 +345,12 @@ function Color:set(value)
       self:set {h= value.hue or h, s= value.saturation or s, l= value.lightness or l}
       value.hue = nil
       value.saturation = nil
+    end
+
+    if value.whiteness or value.blackness then
+      local h, w, b = self:hwb()
+      self:set {h= value.hue or h, w= value.whiteness or w, b= value.backness or b}
+      value.hue = nil
     end
 
     if value.hue or value.saturation or value.value then
@@ -436,6 +469,29 @@ end
 function Color:hsla()
   local h, s, l = self:hsl()
   return h, s, l, self.a
+end
+
+--- Get hwb values.
+--
+-- @treturn number[0;1] hue
+-- @treturn number[0;1] whiteness
+-- @treturn number[0;1] blackness
+function Color:hwb()
+  local h, s, v = self:hsv()
+  local w = (1 - s) * v
+  local b = 1 - v
+  return h, w, b
+end
+
+--- Get hwb values.
+--
+-- @treturn number[0;1] hue
+-- @treturn number[0;1] whiteness
+-- @treturn number[0;1] blackness
+-- @treturn number[0;1] alpha
+function Color:hwba()
+  local h, w, b = self:hwb()
+  return h, w, b, self.a
 end
 
 --- Get cmyk values.

@@ -2,6 +2,11 @@
 
 Convert and manipulate color values.
 
+## Features
+
+- Supported color formats: rgb, hsv, hsl, cmyk
+- Includes X11 colors.
+- Parse a variety of [color formats](https://firanel.github.io/lua-color/index.html#Color:set)
 
 ## Install
 

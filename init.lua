@@ -251,8 +251,8 @@ function Color:set(value)
     self.g = value[2]
     self.b = value[3]
     self.a = value[4] or self.a or 1
-  elseif value.r ~= nil or value.g ~= nil or value.b ~= nil then
-    self.r = value.r or self.r
+  elseif value.r ~= nil then
+    self.r = value.r
     self.g = value.g or self.g
     self.b = value.b or self.b
     self.a = value.a or self.a
@@ -264,8 +264,8 @@ function Color:set(value)
     self.b = (1 - value.y) * k
     self.a = 1
 
-  -- table with hs?
-  else
+  -- table with hs[vl]
+  elseif value.h ~= nil then
     local hue, saturation = value.h, value.s
     assert(hue ~= nil, saturation ~= nil)
 
@@ -286,6 +286,34 @@ function Color:set(value)
     self.g = g
     self.b = b
     self.a = value.a or self.a or 1
+
+  else -- Single set mode
+    if value.red then self.r = value.red end
+    if value.green then self.g = value.green end
+    if value.blue then self.b = value.blue end
+    if value.alpha then self.a = value.alpha end
+
+    if value.lightness then
+      local h, s, l = self:hsl()
+      self:set {h= value.hue or h, s= value.saturation or s, l= value.lightness or l}
+      value.hue = nil
+      value.saturation = nil
+    end
+
+    if value.hue or value.saturation or value.value then
+      local h, s, v = self:hsv()
+      self:set {h= value.hue or h, s= value.saturation or s, v= value.value or v}
+    end
+
+    if value.cyan or value.magenta or value.yellow or value.key then
+      local c, m, y, k = self:cmyk()
+      self:set {
+        c = value.cyan or c,
+        m = value.magenta or m,
+        y = value.yellow or y,
+        k = value.key or k
+      }
+    end
   end
 
   local r, g, b, a =
@@ -370,7 +398,7 @@ end
 -- @treturn number[0;1] saturation
 -- @treturn number[0;1] lightness
 function Color:hsl()
-  local hue, _, max, min = self:hsv()
+  local hue, _, max, min = self:_hsvm()
   local lightness = (max + min) / 2
 
   local saturation = lightness == 0 and 0
@@ -472,7 +500,7 @@ end
 --- Mix two colors together.
 --
 -- @tparam Color other
--- @tparam number strength 0 results in self, 1 results in other (Default: 0.5)
+-- @tparam ?number strength 0 results in self, 1 results in other (Default: 0.5)
 --
 -- @treturn Color self
 function Color:mix(other, strength)

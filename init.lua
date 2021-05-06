@@ -123,6 +123,7 @@ end
 --   Values are in the same ranges as in css ([0;255] for rgb, [0;1] for alpha, ...)<br>
 --   functions can be specified in a simplified syntax: `rgb(r, g, b) == rgb r g b`
 --  </li>
+--  <li>NCol string: `R10, 50%, 50%`</li>
 --  <li>hex string: `#rgb` | `#rgba` | `#rrggbb` | `#rrggbbaa` (`#` can be omitted)</li>
 --  <li>rgb values in [0;1]: `{r, g, b[, a]}` | `{r=r, g=g, b=b[, a=a]}`</li>
 --  <li>hsv values in [0;1]: `{h=h, s=s, v=v[, a=a]}`</li>
@@ -185,81 +186,108 @@ function Color:set(value)
       end
 
       local func, values = value:match "(%w+)[ %(]+([x ,.%x%%]+)"
-      if func == "rgb" then
-        local r, g, b = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
-        assert(r and g and b)
-        self.r = tonumber(r) / 0xff
-        self.g = tonumber(g) / 0xff
-        self.b = tonumber(b) / 0xff
-        return self
-      elseif func == "rgba" then
-        local r, g, b, a = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+%%?)"
-        assert(r and g and b and a)
-        self.r = tonumber(r) / 0xff
-        self.g = tonumber(g) / 0xff
-        self.b = tonumber(b) / 0xff
-        self.a = tonumPercent(a)
-        return self
-      elseif func == "hsv" then
-        local h, s, v = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
-        assert(h and s and v)
-        return self:set {
-          h = tonumber(h) / 360,
-          s = tonumPercent(s),
-          v = tonumPercent(v),
-        }
-      elseif func == "hsva" then
-        local h, s, v, a = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
-        assert(h and s and v and a)
-        return self:set {
-          h = tonumber(h) / 360,
-          s = tonumPercent(s),
-          v = tonumPercent(v),
-          a = tonumPercent(a)
-        }
-      elseif func == "hsl" then
-        local h, s, l = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
-        assert(h and s and l)
-        return self:set {
-          h = tonumber(h) / 360,
-          s = tonumPercent(s),
-          l = tonumPercent(l),
-        }
-      elseif func == "hsla" then
-        local h, s, v, a = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
-        assert(h and s and v and a)
-        return self:set {
-          h = tonumber(h) / 360,
-          s = tonumPercent(s),
-          l = tonumPercent(l),
-          a = tonumPercent(a)
-        }
-      elseif func == "hwb" then
-        local h, w, b = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
-        assert(h and w and b)
-        return self:set {
-          h = tonumber(h) / 360,
-          w = tonumPercent(w),
-          b = tonumPercent(b),
-        }
-      elseif func == "hwba" then
-        local h, w, b, a = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
-        assert(h and w and b and a)
-        return self:set {
-          h = tonumber(h) / 360,
-          w = tonumPercent(w),
-          b = tonumPercent(b),
-          a = tonumPercent(a)
-        }
-      elseif func == "cmyk" then
-        local c, m, y, k = values:match "([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
-        assert(c and m and y and k)
-        return self:set {
-          c = tonumPercent(c),
-          m = tonumPercent(m),
-          y = tonumPercent(y),
-          k = tonumPercent(k),
-        }
+      if func ~= nil then
+        if func == "rgb" then
+          local r, g, b = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)"
+          assert(r and g and b)
+          self.r = tonumber(r) / 0xff
+          self.g = tonumber(g) / 0xff
+          self.b = tonumber(b) / 0xff
+          return self
+        elseif func == "rgba" then
+          local r, g, b, a = values:match "([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+)[ ,]+([x.%x]+%%?)"
+          assert(r and g and b and a)
+          self.r = tonumber(r) / 0xff
+          self.g = tonumber(g) / 0xff
+          self.b = tonumber(b) / 0xff
+          self.a = tonumPercent(a)
+          return self
+        elseif func == "hsv" then
+          local h, s, v = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
+          assert(h and s and v)
+          return self:set {
+            h = tonumber(h) / 360,
+            s = tonumPercent(s),
+            v = tonumPercent(v),
+          }
+        elseif func == "hsva" then
+          local h, s, v, a = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
+          assert(h and s and v and a)
+          return self:set {
+            h = tonumber(h) / 360,
+            s = tonumPercent(s),
+            v = tonumPercent(v),
+            a = tonumPercent(a)
+          }
+        elseif func == "hsl" then
+          local h, s, l = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
+          assert(h and s and l)
+          return self:set {
+            h = tonumber(h) / 360,
+            s = tonumPercent(s),
+            l = tonumPercent(l),
+          }
+        elseif func == "hsla" then
+          local h, s, v, a = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
+          assert(h and s and v and a)
+          return self:set {
+            h = tonumber(h) / 360,
+            s = tonumPercent(s),
+            l = tonumPercent(l),
+            a = tonumPercent(a)
+          }
+        elseif func == "hwb" then
+          local h, w, b = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
+          assert(h and w and b)
+          return self:set {
+            h = tonumber(h) / 360,
+            w = tonumPercent(w),
+            b = tonumPercent(b),
+          }
+        elseif func == "hwba" then
+          local h, w, b, a = values:match "([x.%x]+)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
+          assert(h and w and b and a)
+          return self:set {
+            h = tonumber(h) / 360,
+            w = tonumPercent(w),
+            b = tonumPercent(b),
+            a = tonumPercent(a)
+          }
+        elseif func == "cmyk" then
+          local c, m, y, k = values:match "([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
+          assert(c and m and y and k)
+          return self:set {
+            c = tonumPercent(c),
+            m = tonumPercent(m),
+            y = tonumPercent(y),
+            k = tonumPercent(k),
+          }
+        end
+      else
+        local col, dist, w, b, a = value:match "([RGBCMYrgbcmy])(%d*)[, ]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
+        if col == nil then
+          col, dist, w, b, a = value:match "([RGBCMYrgbcmy])(%d*)[, ]+([x.%x]+%%?)[ ,]+([x.%x]+%%?)"
+        end
+        if col then
+          col = col:lower()
+
+          local h
+          if     col == "r" then h = 0
+          elseif col == "y" then h = 1/6
+          elseif col == "g" then h = 2/6
+          elseif col == "c" then h = 3/6
+          elseif col == "b" then h = 4/6
+          elseif col == "m" then h = 5/6 end
+
+          if #dist > 0 then h = h + tonumber(dist) / 600 end
+
+          return self:set {
+            h = h,
+            w = tonumPercent(w),
+            b = tonumPercent(b),
+            a = a and tonumPercent(a) or 1
+          }
+        end
       end
     else
       value = value:sub(2)

@@ -125,6 +125,26 @@ end
 --  <li>rgb values in [0;1]: `{r, g, b[, a]}` | `{r=r, g=g, b=b[, a=a]}`</li>
 --  <li>hsv values in [0;1]: `{h=h, s=s, v=v[, a=a]}`</li>
 --  <li>hsl values in [0;1]: `{h=h, s=s, l=l[, a=a]}`</li>
+--  <li>cmyk values in [0;1]: `{c=c, m=m, y=y, k=k}`</li>
+--  <li>single set mode, table with any combination of the following: <ul>
+--   <li>`red`</li>
+--   <li>`green`</li>
+--   <li>`blue`</li>
+--   <li>`alpha`</li>
+--   <li>`hue`</li>
+--   <li>`saturation`</li>
+--   <li>`value`</li>
+--   <li>`lightness`</li>
+--   <li>`cyan`</li>
+--   <li>`magenta`</li>
+--   <li>`yellow`</li>
+--   <li>`key`</li>
+--   </ul>
+--   All values are in `[0;1]`.<br>
+--   They will be applied in the order: `rgba -> hsl -> hsv -> cmyk`<br>
+--   If `lightness` is given, saturation is treated as hsl saturation,
+--   otherwise it will be treated as hsv saturation.
+--  </li>
 -- </ul>
 --
 -- @see Color:__call

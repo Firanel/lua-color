@@ -701,11 +701,119 @@ end
 
 
 
+--- Get string representation of color.
+--
+-- If `format` is `nil`, `color:tostring()` is the same as `tostring(color)`.
+--
+-- @tparam ?string format One of: `#fff`, `#ffff`, `#ffffff`, `#ffffffff`,
+--  rgb, rgba, hsv, hsva, hsl, hsla, hwb, hwba, ncol, cmyk
+--
+-- @treturn string
+--
+-- @see Color:__tostring
+function Color:tostring(format)
+  if format == nil then return tostring(self) end
+
+  format = format:lower()
+
+  if format:sub(1,1) == "#" then
+    if #format == 4 then
+      return string.format("#%x%x%x", utils.round(self.r * 0xf),
+        utils.round(self.g * 0xf), utils.round(self.b * 0xf))
+    elseif #format == 5 then
+      return string.format("#%x%x%x%x", utils.round(self.r * 0xf),
+        utils.round(self.g * 0xf), utils.round(self.b * 0xf), utils.round(self.a * 0xf))
+    elseif #format == 7 then
+      return string.format("#%02x%02x%02x", utils.round(self.r * 0xff),
+        utils.round(self.g * 0xff), utils.round(self.b * 0xff))
+    elseif #format == 9 then
+      return string.format("#%02x%02x%02x%02x", utils.round(self.r * 0xff),
+        utils.round(self.g * 0xff), utils.round(self.b * 0xff), utils.round(self.a * 0xff))
+    end
+  elseif format == "rgb" then
+    return string.format("rgb(%d, %d, %d)",
+      utils.round(self.r * 0xff),
+      utils.round(self.g * 0xff),
+      utils.round(self.b * 0xff))
+  elseif format == "rgba" then
+    return string.format("rgba(%d, %d, %d, %s)",
+      utils.round(self.r * 0xff),
+      utils.round(self.g * 0xff),
+      utils.round(self.b * 0xff), self.a)
+  elseif format == "hsv" then
+    local h, s, v = self:hsv()
+    return string.format("hsv(%d, %d%%, %d%%)",
+      utils.round(h * 360),
+      utils.round(s * 100),
+      utils.round(v * 100))
+  elseif format == "hsva" then
+    local h, s, v, a = self:hsva()
+    return string.format("hsva(%d, %d%%, %d%%, %s)",
+      utils.round(h * 360),
+      utils.round(s * 100),
+      utils.round(v * 100), a)
+  elseif format == "hsl" then
+    local h, s, l = self:hsl()
+    return string.format("hsl(%d, %d%%, %d%%)",
+      utils.round(h * 360),
+      utils.round(s * 100),
+      utils.round(l * 100))
+  elseif format == "hsla" then
+    local h, s, l, a = self:hsla()
+    return string.format("hsla(%d, %d%%, %d%%, %s)",
+      utils.round(h * 360),
+      utils.round(s * 100),
+      utils.round(l * 100), a)
+  elseif format == "hwb" then
+    local h, w, b = self:hwb()
+    return string.format("hwb(%d, %d%%, %d%%)",
+      utils.round(h * 360),
+      utils.round(w * 100),
+      utils.round(b * 100))
+  elseif format == "hwba" then
+    local h, w, b, a = self:hwba()
+    return string.format("hwba(%d, %d%%, %d%%, %s)",
+      utils.round(h * 360),
+      utils.round(w * 100),
+      utils.round(b * 100), a)
+  elseif format == "ncol" then
+    local h, w, b = self:hwb()
+    local h_maj, h_min = math.modf(h * 6)
+    h_maj = h_maj % 6
+
+    local col
+    if h_maj == 0 then col = "R"
+    elseif h_maj == 1 then col = "Y"
+    elseif h_maj == 2 then col = "G"
+    elseif h_maj == 3 then col = "C"
+    elseif h_maj == 4 then col = "B"
+    else col = "M" end
+
+    return string.format("%s%d, %d%%, %d%%",
+      col, utils.round(h_min * 100),
+      utils.round(w * 100),
+      utils.round(b * 100))
+  elseif format == "cmyk" then
+    local c, m, y, k = self:cmyk()
+    return string.format("cymk(%d%%, %d%%, %d%%, %d%%)",
+      utils.round(c * 100),
+      utils.round(m * 100),
+      utils.round(y * 100),
+      utils.round(k * 100))
+  end
+
+  return tostring(self)
+end
+
+
+
 --- Get color in rgb hex notation.
 -- <br>
 -- only adds alpha value if `color.a < 1`
 --
 -- @treturn string `#rrggbb` | `#rrggbbaa`
+--
+-- @see Color:tostring
 function Color:__tostring()
   if self.a < 1 then
     return string.format(

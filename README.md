@@ -4,9 +4,11 @@ Convert and manipulate color values.
 
 ## Features
 
-- Supported color formats: rgb, hsv, hsl, cmyk
+- Supported color formats: rgb, hsv, hsl, hwb, ncol, cmyk
 - Includes X11 colors.
-- Parse a variety of [color formats](https://firanel.github.io/lua-color/index.html#Color:set)
+- Parse a variety of [color formats](https://firanel.github.io/lua-color/index.html#Color:set).
+- Methods for common color manipulations.
+- Generate color schemes from a base color.
 
 ## Install
 
@@ -51,8 +53,9 @@ local new_color = Color(color)
 
 ### Retrieve the color
 ```lua
--- Print color as hex string
-print(color)
+-- Print color
+print(Color "#ff0000") -- prints: #ff0000
+print(Color "#ff0000" :tostring "hsl") -- prints: hsl(0, 100%, 50%)
 
 -- Print color as hsv
 local h, s, v = color:hsv()

@@ -288,12 +288,12 @@ function Color:set(value)
     self.a = value.a or self.a or 1
   end
 
-  local r, g, b, a = self.r, self.g, self.b, self.a
+  local r, g, b, a =
+    math.clamp(self.r, 0, 1),
+    math.clamp(self.g, 0, 1),
+    math.clamp(self.b, 0, 1),
+    math.clamp(self.a, 0, 1)
   assert(r and g and b and a, "Color invalid")
-  assert(r >= 0 and r <= 1, "red value out of bounds")
-  assert(g >= 0 and g <= 1, "green value out of bounds")
-  assert(b >= 0 and b <= 1, "blue value out of bounds")
-  assert(a >= 0 and a <= 1, "alpha value out of bounds")
   return self
 end
 
@@ -576,17 +576,17 @@ function Color:__tostring()
   if self.a < 1 then
     return string.format(
       "#%02x%02x%02x%02x",
-      round(self.r * 0xff),
-      round(self.g * 0xff),
-      round(self.b * 0xff),
-      round(self.a * 0xff)
+      math.round(self.r * 0xff),
+      math.round(self.g * 0xff),
+      math.round(self.b * 0xff),
+      math.round(self.a * 0xff)
     )
   else
     return string.format(
       "#%02x%02x%02x",
-      round(self.r * 0xff),
-      round(self.g * 0xff),
-      round(self.b * 0xff)
+      math.round(self.r * 0xff),
+      math.round(self.g * 0xff),
+      math.round(self.b * 0xff)
     )
   end
 end
@@ -635,6 +635,39 @@ end
 function Color.__sub(a, b)
   assert(Color.isColor(a) and Color.isColor(b), "Can only add two colors.")
   return Color(a):mix(b):rotate(0.5)
+end
+
+--- Apply rgb mask to color.
+--
+-- @tparam Color|number a color or mask
+-- @tparam Color|number b color or mask (if a and b are colors b is used as mask)
+--
+-- @treturn Color new color
+--
+-- @usage local new_col = color & 0xff00ff -- get new color without the green channel
+function Color.__band(a, b)
+  local color, mask
+  if Color.isColor(a) and type(b) == "number" then
+    color = a
+    mask = b
+  elseif Color.isColor(b) and type(a) == "number" then
+    color = b
+    mask = a
+  elseif Color.isColor(a) and Color.isColor(b) then
+    color = a
+    mask = math.round(b.r * 0xff) << 16
+      + math.round(b.g * 0xff) << 8
+      + math.round(b.b * 0xff)
+  else
+    error("Required arguments: Color|number,Color|number Received: "..type(a)..","..type(b))
+  end
+
+  return Color {
+    (math.round(color.r * 0xff) & (mask >> 16)) / 0xff,
+    (math.round(color.g * 0xff) & (mask >>  8)) / 0xff,
+    (math.round(color.b * 0xff) &  mask       ) / 0xff,
+    color.a
+  }
 end
 
 

@@ -18,6 +18,14 @@ function max_ind(first, ...)
   return max, ind
 end
 
-function round(x)
-  return x + 0.5 - (x + 0.5) % 1
+if math.round == nil then
+  function math.round(x)
+    return x + 0.5 - (x + 0.5) % 1
+  end
+end
+
+if math.clamp == nil then
+  function math.clamp(x, min, max)
+    return x < min and min or x > max and max or x
+  end
 end

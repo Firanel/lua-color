@@ -1,4 +1,4 @@
-function min_ind(first, ...)
+local function min_ind(first, ...)
   local min, ind = first, 1
   for i, v in ipairs {...} do
     if v < min then
@@ -8,7 +8,7 @@ function min_ind(first, ...)
   return min, ind
 end
 
-function max_ind(first, ...)
+local function max_ind(first, ...)
   local max, ind = first, 1
   for i, v in ipairs {...} do
     if v > max then
@@ -18,14 +18,17 @@ function max_ind(first, ...)
   return max, ind
 end
 
-if math.round == nil then
-  function math.round(x)
-    return x + 0.5 - (x + 0.5) % 1
-  end
+local function round(x)
+  return x + 0.5 - (x + 0.5) % 1
 end
 
-if math.clamp == nil then
-  function math.clamp(x, min, max)
-    return x < min and min or x > max and max or x
-  end
+local function clamp(x, min, max)
+  return x < min and min or x > max and max or x
 end
+
+return {
+  min = min_ind,
+  max = max_ind,
+  round = round,
+  clamp = clamp,
+}

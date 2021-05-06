@@ -4,7 +4,7 @@
 
 
 
-require "lua-color.util"
+local utils = require "lua-color.util"
 local class = require "lua-color.util.class"
 
 
@@ -289,10 +289,10 @@ function Color:set(value)
   end
 
   local r, g, b, a =
-    math.clamp(self.r, 0, 1),
-    math.clamp(self.g, 0, 1),
-    math.clamp(self.b, 0, 1),
-    math.clamp(self.a, 0, 1)
+    utils.clamp(self.r, 0, 1),
+    utils.clamp(self.g, 0, 1),
+    utils.clamp(self.b, 0, 1),
+    utils.clamp(self.a, 0, 1)
   assert(r and g and b and a, "Color invalid")
   return self
 end
@@ -322,7 +322,7 @@ end
 function Color:_hsvm()
   local r, g, b = self.r, self.g, self.b
 
-  local max, max_i = max_ind(r, g, b)
+  local max, max_i = utils.max(r, g, b)
   local min = math.min(r, g, b)
   local chroma = max - min
 
@@ -578,17 +578,17 @@ function Color:__tostring()
   if self.a < 1 then
     return string.format(
       "#%02x%02x%02x%02x",
-      math.round(self.r * 0xff),
-      math.round(self.g * 0xff),
-      math.round(self.b * 0xff),
-      math.round(self.a * 0xff)
+      utils.round(self.r * 0xff),
+      utils.round(self.g * 0xff),
+      utils.round(self.b * 0xff),
+      utils.round(self.a * 0xff)
     )
   else
     return string.format(
       "#%02x%02x%02x",
-      math.round(self.r * 0xff),
-      math.round(self.g * 0xff),
-      math.round(self.b * 0xff)
+      utils.round(self.r * 0xff),
+      utils.round(self.g * 0xff),
+      utils.round(self.b * 0xff)
     )
   end
 end
@@ -605,6 +605,31 @@ function Color:__eq(other)
     and self.a == other.a
 end
 
+--- Checks whether color is darker.
+--
+-- @tparam Color other
+--
+-- @treturn boolean self is darker than other
+function Color:__lt(other)
+  local _, _, la = self:hsl()
+  local _, _, lb = other:hsl()
+  return la < lb
+end
+
+--- Checks whether color is as dark or darker.
+--
+-- @tparam Color other
+--
+-- @treturn boolean self is as dark or darker than other
+function Color:__le(other)
+  local _, _, la = self:hsl()
+  local _, _, lb = other:hsl()
+  return la <= lb
+end
+
+--- Iterate through color.
+--
+-- Iterates through r, g, b, and a.
 function Color:__pairs()
   local function iter(tbl, k)
     if k == nil then
@@ -673,17 +698,17 @@ function Color.__band(a, b)
     mask = a
   elseif Color.isColor(a) and Color.isColor(b) then
     color = a
-    mask = math.round(b.r * 0xff) << 16
-      + math.round(b.g * 0xff) << 8
-      + math.round(b.b * 0xff)
+    mask = utils.round(b.r * 0xff) << 16
+      + utils.round(b.g * 0xff) << 8
+      + utils.round(b.b * 0xff)
   else
     error("Required arguments: Color|number,Color|number Received: "..type(a)..","..type(b))
   end
 
   return Color {
-    (math.round(color.r * 0xff) & (mask >> 16)) / 0xff,
-    (math.round(color.g * 0xff) & (mask >>  8)) / 0xff,
-    (math.round(color.b * 0xff) &  mask       ) / 0xff,
+    (utils.round(color.r * 0xff) & (mask >> 16)) / 0xff,
+    (utils.round(color.g * 0xff) & (mask >>  8)) / 0xff,
+    (utils.round(color.b * 0xff) &  mask       ) / 0xff,
     color.a
   }
 end

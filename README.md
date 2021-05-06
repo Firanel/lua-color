@@ -121,6 +121,11 @@ local new_a, new_b, new_c = color:complement():analogous()
 -- Check if variable is color
 if Color.isColor(color) then print "It's a color!" end
 
+-- Compare lightness of colors
+if Color "#000000" > Color "#ffffff" then
+    print "Black is lighter than white!" -- Never runs
+end
+
 -- Equate colors
 assert(color == color:clone())
 ```

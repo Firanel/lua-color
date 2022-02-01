@@ -54,24 +54,37 @@ local new_color = Color(color)
 
 ### Retrieve the color
 ```lua
+local color = Color "#ff0000"
+
 -- Print color
-print(Color "#ff0000") -- prints: #ff0000
-print(Color "#ff0000" :tostring "hsl") -- prints: hsl(0, 100%, 50%)
+print(color) -- prints: #ff0000
 
 -- Print color as hsv
 local h, s, v = color:hsv()
-print(h * 360, s * 100, v * 100)
+print(h * 360, s * 100, v * 100) -- prints: 0 100 100
+print(color:tostring "hsv")      -- prints: hsv(0, 100%, 100%)
+
+-- Print color as hwb
+local h, w, b = color:hsv()
+print(h * 360, w * 100, b * 100) -- prints: 0 0 0
+print(color:tostring "hwb")      -- prints: hwb(0, 0%, 0%)
 
 -- Print color as hsla
 local h, s, l, a = color:hsla()
-print(h * 360, s * 100, l * 100, a)
+print(h * 360, s * 100, l * 100, a) -- prints: 0 100 50 1
+print(color:tostring "hsla")        -- prints: hsla(0, 100%, 50%, 1)
 
 -- Print color as rgba
 local r, g, b, a = color:rgba()
-print(r * 255, g * 255, b * 255, a)
+print(r * 255, g * 255, b * 255, a) -- prints: 255 0 0 1
+print(color:tostring "rgba")        -- prints: rgba(255, 0, 0, 1)
 
 -- Print color as cmyk
-print(color:cmyk())
+print(color:cmyk())          --prints: 0 1 1 0
+print(color:tostring "cmyk") -- prints: cmyk(0%, 100%, 100%, 0%)
+
+-- Print color as NCol
+print(color:tostring "ncol") -- prints: R0, 0%, 0%
 ```
 
 ### Manipulate the color
@@ -95,6 +108,8 @@ color:blackOrWhite()
 color:mix(other_color, 0.3) -- mix colors with 70:30 ratio
 local new_color = color + other_color -- mix colors 50:50 and return new
 local new_color = color - other_color -- complement of +
+-- Example: #ff0000 + #00ff00 = #808000 (you can use 'color:set {value = 1}' to get #ffff00)
+--          #ff0000 + #00ff00 = #000080
 
 -- Apply mask
 local new_color = color & 0xff00ff -- Get color without green component

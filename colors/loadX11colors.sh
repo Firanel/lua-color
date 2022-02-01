@@ -6,12 +6,12 @@ tmpdir=$(mktemp -d)
 
 wget -O "$tmpdir/oscolor.c" "https://gitlab.freedesktop.org/xorg/xserver/-/raw/master/os/oscolor.c"
 
-outfile="$(dirname $0)/X11.lua"
+outfile="$(dirname $0)/X11.new.lua"
 cat > "$outfile" <<EOF
 ---
 -- Table of X11 color names.
 --
--- Data pulled from `https://gitlab.freedesktop.org/xorg/xserver/-/raw/master/os/oscolor.c`
+-- Data pulled from \`https://gitlab.freedesktop.org/xorg/xserver/-/raw/master/os/oscolor.c\`
 --
 -- @usage Color.colorNames = require "lua-color.colors.X11"
 --

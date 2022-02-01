@@ -4,11 +4,12 @@ Convert and manipulate color values.
 
 ## Features
 
-- Supported color formats: rgb, hsv, hsl, hwb, ncol, cmyk
-- Includes X11 colors.
 - Parse a variety of [color formats](https://firanel.github.io/lua-color/classes/Color.html#Color:set).
+- Style Terminal output.
 - Methods for common color manipulations.
 - Generate color schemes from a base color.
+- Supported color formats: rgb, hsv, hsl, hwb, ncol, cmyk
+- Includes X11 colors.
 
 ## Install
 
@@ -138,3 +139,31 @@ end
 assert(color == color:clone())
 ```
 
+### Terminal colors
+```lua
+local tc = require "lua-color.terminal"
+
+-- Print red text
+io.write(tc.set { color = Color "rgb 255 0 0" })
+print("Hello world")
+io.write(tc.set { color = "default" })
+
+-- Print red text (resets all styles afterward, not just color)
+print(tc.apply {
+    color = Color "rgb 255 0 0",
+    to = "Hello world"
+})
+
+-- Make text italic and underlined
+print(tc.apply {
+    tc.Effect.italic | tc.Effect.underline,
+    to = "Hello world"
+})
+
+-- Make text italic and underlined
+print(tc.apply {
+    italic = true,
+    underline = true,
+    to = "Hello world"
+})
+```

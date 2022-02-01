@@ -3,7 +3,8 @@ package = "lua-color"
 
 file = {
      "init.lua",
-     "colors"
+     "colors",
+     "terminal.lua",
 }
 dir = "docs"
 

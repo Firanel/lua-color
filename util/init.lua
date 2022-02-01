@@ -26,9 +26,18 @@ local function clamp(x, min, max)
   return x < min and min or x > max and max or x
 end
 
+local function map(t, cb)
+  local n = {}
+  for i, v in ipairs(t) do
+    n[i] = cb(v)
+  end
+  return n
+end
+
 return {
   min = min_ind,
   max = max_ind,
   round = round,
   clamp = clamp,
+  map = map,
 }

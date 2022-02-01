@@ -1,7 +1,7 @@
 ---
 -- Table of X11 color names.
 --
--- Data pulled from 
+-- Data pulled from `https://gitlab.freedesktop.org/xorg/xserver/-/raw/master/os/oscolor.c`
 --
 -- @usage Color.colorNames = require "lua-color.colors.X11"
 --

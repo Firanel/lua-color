@@ -95,20 +95,21 @@ local Effect = (function ()
   return r
 end)()
 
---- Set a format
+--- Set a format.
+-- <br><br>
+-- Options table:
+-- <ul>
+--  <li>`color`: Foreground color</li>
+--  <li>`bg` or `background`: Background color</li>
+--  <li>`font`: Number between 0 (default) and 9 to select font</li>
+--  <li>An effect as `<effect_name> = true`</li>
+--  <li>Flags for effects as index 1</li>
+-- </ul>
 --
 -- @tparam table|number|string|Color options <ul>
 --   <li>`number`: Effect flag</li>
 --   <li>`string` or `Color`: Foreground color</li>
---   <li>`table`: Options table
---    <ul>
---     <li>`color`: Foreground color</li>
---     <li>`bg` or `background`: Foreground color</li>
---     <li>`font`: Number between 0 (default) and 9 to select font</li>
---     <li>An effect as `<effect_name> = true`</li>
---     <li>Flags for effects as index 1</li>
---    </ul>
---   </li>
+--   <li>`table`: Options table (above)</li>
 --  </ul>
 --
 -- @treturn string Escape sequence
@@ -174,14 +175,14 @@ local function set(options)
   return toSequence(table.unpack(seq))
 end
 
---- Reset the format
+--- Reset the format.
 --
 -- @treturn string Escape sequence
 local function reset()
   return toSequence(0)
 end
 
---- Set a format for a string
+--- Set a format for a string.
 --
 -- Sets the format before the string and resets it after.
 --

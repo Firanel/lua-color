@@ -8,6 +8,11 @@ local utils = require "lua-color.util"
 local class = require "lua-color.util.class"
 
 
+-- Lua 5.1 compat
+local bitwise = require "lua-color.util.bitwise"
+local bit_and = bitwise.bit_and
+local bit_lshift = bitwise.bit_lshift
+local bit_rshift = bitwise.bit_rshift
 
 
 -- Utils
@@ -938,21 +943,32 @@ function Color.__band(a, b)
     mask = a
   elseif Color.isColor(a) and Color.isColor(b) then
     color = a
-    mask = utils.round(b.r * 0xff) << 16
-      + utils.round(b.g * 0xff) << 8
+    mask = bit_lshift(utils.round(b.r * 0xff), 16)
+      + bit_lshift(utils.round(b.g * 0xff), 8)
       + utils.round(b.b * 0xff)
   else
     error("Required arguments: Color|number,Color|number Received: "..type(a)..","..type(b))
   end
 
   return Color {
-    (utils.round(color.r * 0xff) & (mask >> 16)) / 0xff,
-    (utils.round(color.g * 0xff) & (mask >>  8)) / 0xff,
-    (utils.round(color.b * 0xff) &  mask       ) / 0xff,
+    bit_and(utils.round(color.r * 0xff), bit_rshift(mask, 16)) / 0xff,
+    bit_and(utils.round(color.g * 0xff), bit_rshift(mask,  8)) / 0xff,
+    bit_and(utils.round(color.b * 0xff), mask                ) / 0xff,
     color.a
   }
 end
 
+--- Apply rgb mask to color, providing backwards compatibility for Lua 5.1 and LuaJIT 2.1.0-beta3 (e.g. inside Neovim), which don't provide native support for bitwise operators.
+--
+-- @tparam Color|number a color or mask
+-- @tparam Color|number b color or mask (if a and b are colors b is used as mask)
+--
+-- @treturn Color new color
+--
+-- @usage local new_col = Color.band(color, 0xff00ff) -- get new color without the green channel
+function Color.band(a, b)
+    return Color.__band(a, b)
+end
 
 
 --- Check whether `color` is a Color.

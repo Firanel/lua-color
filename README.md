@@ -14,7 +14,7 @@ Convert and manipulate color values.
 ## Install
 
 Use `luarocks install lua-color` or add folder to your project root.  
-Supports lua >= 5.3.
+Supports lua >= 5.1.
 
 ## Documentation
 

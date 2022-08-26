@@ -490,6 +490,10 @@ function Color:hsl()
   local saturation = lightness == 0 and 0
     or (max - lightness) / math.min(lightness, 1 - lightness)
 
+  if saturation ~= saturation then
+    saturation = 0
+  end
+
   return hue, saturation, lightness
 end
 

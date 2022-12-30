@@ -1,23 +1,14 @@
---
---------------------------------------------------------------------------------
---         File:  class.lua
---
---        Usage:  ./class.lua
---
---  Description:  
---
---      Options:  ---
--- Requirements:  ---
---         Bugs:  ---
---        Notes:  ---
---       Author:  YOUR NAME (), <>
--- Organization:  
---      Version:  1.0
---      Created:  15.04.2021
---     Revision:  ---
---------------------------------------------------------------------------------
---
+-- Code based on:
+-- http://lua-users.org/wiki/SimpleLuaClasses
 
+--- Helper function to create classes
+--
+-- @usage local Color = class(function () --[[ constructor ]] end)
+-- @usage local Color2 = class(
+--   Color,
+--   function () --[[ constructor ]] end,
+--   { prop_a = "some value" }
+-- )
 local function class(base, init, defaults)
   local c = defaults or {}    -- a new class instance
   if not init and type(base) == 'function' then

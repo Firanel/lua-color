@@ -20,7 +20,7 @@
 -- [More information](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_\(Select_Graphic_Rendition\)_parameters)
 
 local Color = require "lua-color"
-local utils = require "lua-color.util"
+local utils = require "lua-color.utils"
 
 local escape = "\x1b["
 

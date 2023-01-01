@@ -4,12 +4,12 @@
 
 
 
-local utils = require "lua-color.util"
-local class = require "lua-color.util.class"
+local utils = require "lua-color.utils"
+local class = require "lua-color.utils.class"
 
 
 -- Lua 5.1 compat
-local bitwise = require "lua-color.util.bitwise"
+local bitwise = require "lua-color.utils.bitwise"
 local bit_and = bitwise.bit_and
 local bit_lshift = bitwise.bit_lshift
 local bit_rshift = bitwise.bit_rshift

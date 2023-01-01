@@ -1,3 +1,5 @@
+[![Luarocks](https://img.shields.io/luarocks/v/Firanel/lua-color?label=Luarocks&logo=Lua)](https://luarocks.org/modules/Firanel/lua-color)
+
 # Lua Color
 
 Convert and manipulate color values.

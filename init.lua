@@ -453,7 +453,7 @@ function Color:_hsvm()
 
   local saturation = max == 0 and 0 or chroma / max
 
-  return hue, saturation, max, min
+  return hue % 1, saturation, max, min
 end
 
 --- Get hsv values.

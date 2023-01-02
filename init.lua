@@ -540,6 +540,9 @@ end
 function Color:cmyk()
   local r, g, b = self.r, self.g, self.b
   local K = math.max(r, g, b)
+  if K == 0 then
+     return 0.0, 0.0, 0.0, 1.0
+  end
   local k = 1 - K
   local c = (K - r) / K
   local m = (K - g) / K

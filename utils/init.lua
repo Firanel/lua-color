@@ -1,21 +1,21 @@
-local function min_ind(first, ...)
-  local min, ind = first, 1
+local function min_index(first, ...)
+  local min, index = first, 1
   for i, v in ipairs {...} do
     if v < min then
-      min, ind = v, i + 1
+      min, index = v, i + 1
     end
   end
-  return min, ind
+  return min, index
 end
 
-local function max_ind(first, ...)
-  local max, ind = first, 1
+local function max_index(first, ...)
+  local max, index = first, 1
   for i, v in ipairs {...} do
     if v > max then
-      max, ind = v, i + 1
+      max, index = v, i + 1
     end
   end
-  return max, ind
+  return max, index
 end
 
 local function round(x)
@@ -35,8 +35,8 @@ local function map(t, cb)
 end
 
 return {
-  min = min_ind,
-  max = max_ind,
+  min = min_index,
+  max = max_index,
   round = round,
   clamp = clamp,
   map = map,

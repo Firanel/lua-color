@@ -2,11 +2,8 @@
 --
 -- @classmod Color
 
-
-
 local utils = require "lua-color.utils"
 local class = require "lua-color.utils.class"
-
 
 -- Lua 5.1 compat
 local bitwise = require "lua-color.utils.bitwise"
@@ -14,9 +11,7 @@ local bit_and = bitwise.bit_and
 local bit_lshift = bitwise.bit_lshift
 local bit_rshift = bitwise.bit_rshift
 
-
 -- Utils
-
 
 local function hcm_to_rgb(h, c, m)
   local r, g, b = 0, 0, 0
@@ -48,10 +43,7 @@ local function tonumPercent(str)
   return tonumber(str)
 end
 
-
-
 -- Color
-
 
 --- Color constructor.
 --
@@ -72,7 +64,6 @@ end
 
 --- Alpha component.
 -- @field a
-
 
 --- Color class
 local Color = class(nil, function (this, value)
@@ -179,7 +170,6 @@ function Color:set(value)
     self.g = value.g
     self.b = value.b
     self.a = value.a
-
 
   elseif type(value) == "string" then
     self.a = 1
@@ -411,8 +401,6 @@ function Color:set(value)
   return self
 end
 
-
-
 --- Get rgb values.
 --
 -- @treturn number[0;1] red
@@ -431,7 +419,6 @@ end
 function Color:rgba()
   return self.r, self.g, self.b, self.a
 end
-
 
 function Color:_hsvm()
   local r, g, b = self.r, self.g, self.b
@@ -476,7 +463,6 @@ function Color:hsva()
   local h, s, v = self:_hsvm()
   return h, s, v, self.a
 end
-
 
 --- Get hsl values.
 --
@@ -549,8 +535,6 @@ function Color:cmyk()
   local y = (K - b) / K
   return c, m, y, k
 end
-
-
 
 --- Rotate hue of color.
 --
@@ -627,8 +611,6 @@ function Color:mix(other, strength)
   self.a = self.a * (1 - strength) + other.a * strength
   return self
 end
-
-
 
 --- Generate complementary color.
 --
@@ -710,8 +692,6 @@ function Color:evenlySpaced(n, r)
 
   return res
 end
-
-
 
 --- Get string representation of color.
 --
@@ -816,8 +796,6 @@ function Color:tostring(format)
 
   return tostring(self)
 end
-
-
 
 --- Get color in rgb hex notation.
 -- <br>
@@ -977,7 +955,6 @@ function Color.band(a, b)
     return Color.__band(a, b)
 end
 
-
 --- Check whether `color` is a Color.
 --
 -- @param color
@@ -988,7 +965,5 @@ end
 function Color.isColor(color)
   return color ~= nil and color.__is_color == true
 end
-
-
 
 return Color

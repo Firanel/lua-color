@@ -32,7 +32,7 @@ local function class(base, init, defaults)
     setmetatable(obj,c)
     if init then
       init(obj,...)
-    else 
+    else
       -- make sure that any stuff from the base class is initialized!
       if base and base.init then
       base.init(obj, ...)
@@ -43,7 +43,7 @@ local function class(base, init, defaults)
   c.init = init
   c.is_a = function(self, klass)
     local m = getmetatable(self)
-    while m do 
+    while m do
       if m == klass then return true end
       m = m._base
     end

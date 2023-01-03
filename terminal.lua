@@ -14,9 +14,9 @@
 --  <li>default</li>
 -- </ul>
 --
--- __!__ Not all terminals support all effects  
+-- __!__ Not all terminals support all effects
 -- __!__ Generally you can expect the colors from the list above
--- to work on all *nix systems  
+-- to work on all *nix systems
 -- [More information](https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_\(Select_Graphic_Rendition\)_parameters)
 
 local Color = require "lua-color"

@@ -318,7 +318,7 @@ function Color:set(value)
     self.r = tonumber(r, 16) / div
     self.g = tonumber(g, 16) / div
     self.b = tonumber(b, 16) / div
-    self.a = a ~= nil and tonumber(a, 16) / div.a or 1
+    self.a = a ~= nil and tonumber(a, 16) / div or 1
 
   -- table with rgb
   elseif value[1] ~= nil then
